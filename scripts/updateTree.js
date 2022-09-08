@@ -14,7 +14,7 @@ const TREES_PATH = './static/trees/'
 const EVENTS_PATH = './static/events/'
 
 const EVENTS = ['deposit']
-const enabledChains = ['1']
+const enabledChains = ['1', '56', '100', '137' ]
 let mimcHash
 
 const trees = {
@@ -28,8 +28,8 @@ function getName({ path, type, instance, format = '.json', currName = 'eth' }) {
 
 function createTreeZip(netId) {
   try {
-    const config = networkConfig[`netId${netId}`]
-    const { instanceAddress: CONTRACTS } = config.tokens.eth
+    const { tokens, nativeCurrency, currencyName } = networkConfig[`netId${netId}`]
+    const CONTRACTS = tokens[nativeCurrency].instanceAddress
 
     for (const type of EVENTS) {
       for (const [instance] of Object.entries(CONTRACTS)) {
@@ -38,7 +38,7 @@ function createTreeZip(netId) {
           instance,
           format: '',
           path: TREES_PATH,
-          currName: config.currencyName.toLowerCase()
+          currName: currencyName.toLowerCase()
         })
 
         const treesFolder = fs.readdirSync(TREES_FOLDER)
@@ -58,25 +58,24 @@ function createTreeZip(netId) {
 
 async function createTree(netId) {
   try {
-    const { currencyName, tokens, deployedBlock } = networkConfig[`netId${netId}`]
-
-    const currName = currencyName.toLowerCase()
-    const { instanceAddress: CONTRACTS } = tokens.eth
+    const config = networkConfig[`netId${netId}`]
+    const { nativeCurrency, currencyName, deployedBlock } = config
+    const CONTRACTS = config.tokens[nativeCurrency].instanceAddress
 
     for (const type of EVENTS) {
       for (const [instance] of Object.entries(CONTRACTS)) {
         const filePath = getName({
           type,
           instance,
-          currName,
           format: '',
-          path: TREES_PATH
+          path: TREES_PATH,
+          currName: currencyName.toLowerCase()
         })
 
         console.log('createTree', { type, instance })
 
         const { events } = await loadCachedEvents({
-          name: `${type}s_${currName}_${instance}.json`,
+          name: `${type}s_${nativeCurrency}_${instance}.json`,
           directory: EVENTS_PATH,
           deployedBlock
         })

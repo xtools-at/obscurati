@@ -55,7 +55,7 @@ export async function getPastEvents({ type, fromBlock, netId, events, contractAt
   let [{ url: rpcUrl }] = Object.values(networkConfig[`netId${netId}`].rpcUrls)
 
   if (netId === '5') {
-    rpcUrl = `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`
+    rpcUrl = 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
   }
 
   const provider = new Web3.providers.HttpProvider(rpcUrl)
@@ -63,9 +63,13 @@ export async function getPastEvents({ type, fromBlock, netId, events, contractAt
   const contract = new web3.eth.Contract(...contractAttrs)
 
   const currentBlockNumber = await web3.eth.getBlockNumber()
-  const blockDifference = Math.ceil(currentBlockNumber - fromBlock)
+  // PoS networks index blocks too fast, so a buffer is needed
+  const blockNumberBuffer = currentBlockNumber - 3
+  const blockDifference = Math.ceil(blockNumberBuffer - fromBlock)
 
-  const blockRange = Number(netId) === 56 ? 4950 : blockDifference / 20
+  // eth_logs and eth_filter are restricted > 10,000 block queries
+  const blockDenom = blockDifference > 10000 ? 4950 : 20
+  const blockRange = blockDifference / blockDenom
 
   let chunksCount = blockDifference === 0 ? 1 : Math.ceil(blockDifference / blockRange)
   const chunkSize = Math.ceil(blockDifference / chunksCount)
@@ -97,7 +101,6 @@ export async function getPastEvents({ type, fromBlock, netId, events, contractAt
         toBlock += chunkSize
       } catch (err) {
         console.log('getPastEvents events', `chunk number - ${i}, has error: ${err.message}`)
-        chunksCount = chunksCount + 1
       }
   }
   return downloadedEvents

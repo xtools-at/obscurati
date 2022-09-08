@@ -58,7 +58,7 @@ async function testCommon(netId, type, filename) {
 }
 
 async function main() {
-  const NETWORKS = [1, 5, 56]
+  const NETWORKS = [1, 5, 56, 100, 137 ]
 
   for await (const netId of NETWORKS) {
     updateEncrypted(netId)

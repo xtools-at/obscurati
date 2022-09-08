@@ -1,11 +1,12 @@
 import Web3 from 'web3'
 
-import { graph } from '@/services'
 import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import InstanceABI from '@/abis/Instance.abi.json'
 import { CONTRACT_INSTANCES, eventsType } from '@/constants'
 import { sleep, formatEvents, capitalizeFirstLetter } from '@/utils'
+
+const supportedNetworkCaches = [ '1', '56', '100', '137' ]
 
 class EventService {
   constructor({ netId, amount, currency, factoryMethods }) {
@@ -21,7 +22,8 @@ class EventService {
     this.contract = this.getContract({ netId, amount, currency })
 
     this.isNative = nativeCurrency === this.currency
-    this.hasCache = this.isNative && (Number(this.netId) === 1 || Number(this.netId) === 56)
+    this.hasCache = this.isNative
+      && supportedNetworkCaches.indexOf(this.netId) !== 0
   }
 
   getInstanceName(type) {
@@ -310,11 +312,11 @@ class EventService {
     try {
       let events
 
-      if (Number(this.netId) === 56) {
-        const rpcEvents = await this.getBatchEventsFromRpc({ fromBlock, type })
+      if (Number(this.netId) === 1) {
+        const rpcEvents = await this.getEventsPartFromRpc({ fromBlock, toBlock: 'latest', type })
         events = rpcEvents?.events || []
       } else {
-        const rpcEvents = await this.getEventsPartFromRpc({ fromBlock, toBlock: 'latest', type })
+        const rpcEvents = await this.getBatchEventsFromRpc({ fromBlock, type })
         events = rpcEvents?.events || []
       }
       return events
@@ -326,11 +328,9 @@ class EventService {
   async getEventsFromBlock({ fromBlock, graphMethod, type }) {
     try {
       // ToDo think about undefined
-      const graphEvents = await this.getEventsFromGraph({ fromBlock, methodName: graphMethod })
-      const lastSyncBlock = fromBlock > graphEvents?.lastBlock ? fromBlock : graphEvents?.lastBlock
-      const rpcEvents = await this.getEventsFromRpc({ fromBlock: lastSyncBlock, type })
+      const rpcEvents = await this.getEventsFromRpc({ fromBlock, type })
 
-      const allEvents = [].concat(graphEvents?.events || [], rpcEvents || [])
+      const allEvents = [].concat(rpcEvents || [])
       if (allEvents.length) {
         return {
           events: allEvents,
@@ -386,6 +386,7 @@ class EventsFactory {
 
   getService = (payload) => {
     const instanceName = `${payload.currency}_${payload.amount}`
+
     if (this.instances.has(instanceName)) {
       return this.instances.get(instanceName)
     }

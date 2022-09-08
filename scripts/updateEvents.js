@@ -9,7 +9,7 @@ import { loadCachedEvents, getPastEvents } from './helpers'
 
 const EVENTS_PATH = './static/events/'
 const EVENTS = ['Deposit', 'Withdrawal']
-const enabledChains = ['1', '56', '5']
+const enabledChains = ['1', '56', '5', '100', '137' ]
 
 async function main(type, netId) {
   const { tokens, nativeCurrency, deployedBlock } = networkConfig[`netId${netId}`]
