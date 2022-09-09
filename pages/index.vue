@@ -40,12 +40,45 @@
     >
       <i18n path="indexNotification">
         <template v-slot:link>
+          <a href="https://tornadocash.community" target="_blank" rel="noopener noreferrer">
+            {{ $t('indexNotificationLinkText') }}
+          </a>
+        </template>
+      </i18n>
+    </b-notification>
+
+    <b-notification
+      :active="isActiveNotification.second"
+      class="main-notification"
+      type="is-warning"
+      icon-pack="icon"
+      has-icon
+      :aria-close-label="$t('closeNotification')"
+      @close="disableNotification({ key: 'second' })"
+    >
+      <i18n path="rpcDisclaimer">
+        <template v-slot:linkOne>
           <a
-            href="https://twitter.com/TornadoCash/status/1204745639759884289"
+            href="https://home.treasury.gov/news/press-releases/jy0916"
             target="_blank"
             rel="noopener noreferrer"
-            >{{ $t('indexNotificationLinkText') }}</a
           >
+            {{ $t('rpcDisclaimerLinkOneText') }}
+          </a>
+        </template>
+        <template v-slot:linkTwo>
+          <a href="https://chainlist.org" target="_blank" rel="noopener noreferrer">
+            {{ $t('rpcDisclaimerLinkTwoText') }}
+          </a>
+        </template>
+        <template v-slot:linkThree>
+          <a
+            href="https://hackmd.io/@gozzy/tornado-cash-post-censorship#RPC"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ $t('rpcDisclaimerLinkThreeText') }}
+          </a>
         </template>
       </i18n>
     </b-notification>

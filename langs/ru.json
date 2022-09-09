@@ -1,6 +1,6 @@
 {
   "closeNotification": "Закрыть",
-  "indexNotification": "Tornado.cash {link}. Однако, это экспериментальный проект, используйте на свой страх и риск.",
+  "indexNotification": "Tornado Cash в настоящее время поддерживается сообществом, для получения дополнительной информации посетите {link}",
   "indexNotificationLinkText": "прошел аудит",
   "binanceInternalTxsNotification": "Пожалуйста, не используйте адреса кошельков Binance для вывода средств. Внутренние транзакции (включая снятие средств с Tornado.cash) в настоящее время не поддерживаются на бирже Binance. Если у вас возникли проблемы с получением средств, вам следует обратиться в службу поддержки Binance.",
   "deposit": "Депозит",
@@ -165,6 +165,10 @@
   "tooManyDecimalPoints": "[ethjs-unit] слишком много десятичных знаков при преобразовании числа {значения} в wei",
   "tooManyDecimalPlaces": "[ethjs-unit] слишком много знаков после запятой при преобразовании числа {value} в wei",
   "settings": "Настройки",
+  "rpcDisclaimer": "После {linkOne} большинство конечных точек RPC подвергают цензуре депозиты, убедитесь, что ваш кошелек вручную настроен на работающую конечную точку. См. {linkTwo}, чтобы узнать о вариантах и ​​о том, {linkThree}",
+  "rpcDisclaimerLinkOneText": "санкций OFAC",
+  "rpcDisclaimerLinkTwoText": "chainlist.org",
+  "rpcDisclaimerLinkThreeText": "как настроить MetaMask",
   "rpc": "RPC",
   "rpcStatusOk": "Статус RPC: OK",
   "rpcIsDown": "RPC не отвечает",

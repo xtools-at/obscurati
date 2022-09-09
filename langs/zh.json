@@ -1,6 +1,6 @@
 {
   "closeNotification": "关闭通知",
-  "indexNotification": "Tornado.cash {link}。 但它仍处在实验阶段，请注意并自行承担使用风险。",
+  "indexNotification": "Tornado Cash 现在由社区维护，有关更多信息，请访问 {link}",
   "indexNotificationLinkText": "已通过安全审计",
   "binanceInternalTxsNotification": "请不要使用Binance钱包地址进行提款。Binance交易所目前不支持内部交易（包括Tornado.cash提款）。如果您有资金未收到的问题，您应该联系Binance支持。",
   "deposit": "存款",
@@ -165,6 +165,10 @@
   "tooManyDecimalPoints": "[ethjs-unit] 将数字 {value} 转换为 wei 时, 小数点过多",
   "tooManyDecimalPlaces": "[ethjs-unit] 将数字 {value} 转换为 wei 时, 小数位数过多",
   "settings": "设置",
+  "rpcDisclaimer": "之后 {linkOne} 大多数 RPC 端点都有审查存款，请确保您的钱包被手动配置为工作端点。查看选项 {linkTwo} 以及如何 {linkThree}",
+  "rpcDisclaimerLinkOneText": "OFAC 制裁",
+  "rpcDisclaimerLinkTwoText": "chainlist.org",
+  "rpcDisclaimerLinkThreeText": "如何配置 MetaMask",
   "rpc": "节点地址",
   "rpcStatusOk": "节点状态: OK",
   "rpcIsDown": "无法连接此节点",
