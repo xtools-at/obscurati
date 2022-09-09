@@ -1,18 +1,20 @@
 import Web3 from 'web3'
 
+import graph from '@/services/graph'
 import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import InstanceABI from '@/abis/Instance.abi.json'
 import { CONTRACT_INSTANCES, eventsType } from '@/constants'
 import { sleep, formatEvents, capitalizeFirstLetter } from '@/utils'
 
-const supportedNetworkCaches = [ '1', '56', '100', '137' ]
+const supportedCaches = ['1', '56', '100', '137']
 
 class EventService {
   constructor({ netId, amount, currency, factoryMethods }) {
     this.idb = window.$nuxt.$indexedDB(netId)
 
     const { nativeCurrency } = networkConfig[`netId${netId}`]
+    const hasCache = supportedCaches.indexOf(Number(this.netId)) !== 0
 
     this.netId = netId
     this.amount = amount
@@ -22,8 +24,7 @@ class EventService {
     this.contract = this.getContract({ netId, amount, currency })
 
     this.isNative = nativeCurrency === this.currency
-    this.hasCache = this.isNative
-      && supportedNetworkCaches.indexOf(this.netId) !== 0
+    this.hasCache = this.isNative && hasCache
   }
 
   getInstanceName(type) {
