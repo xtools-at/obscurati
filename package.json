@@ -58,7 +58,7 @@
     "vue-i18n": "^8.15.4",
     "vuex-persistedstate": "^2.7.0",
     "web3": "1.5.2",
-    "websnark": "git+https://development.tornadocash.community/tornadocash/websnark.git#master"
+    "websnark": "git+https://development.tornadocash.community/tornadocash/websnark.git#671762fab73f01771d0e7ebcf6b6a3123e193fb4"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.1.2",

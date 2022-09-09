@@ -16561,9 +16561,9 @@ webpackbar@^4.0.0:
     text-table "^0.2.0"
     wrap-ansi "^6.0.0"
 
-"websnark@git+https://development.tornadocash.community/tornadocash/websnark.git#master":
+"websnark@git+https://development.tornadocash.community/tornadocash/websnark.git#671762fab73f01771d0e7ebcf6b6a3123e193fb4":
   version "0.0.4"
-  resolved "git+https://development.tornadocash.community/tornadocash/websnark.git#f30d3cb98cf0de7ea34c16620365cbaf61fb0351"
+  resolved "git+https://development.tornadocash.community/tornadocash/websnark.git#671762fab73f01771d0e7ebcf6b6a3123e193fb4"
   dependencies:
     big-integer "1.6.42"
 
