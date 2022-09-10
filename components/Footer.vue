@@ -37,7 +37,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://torn.community"
+                  href="https://forums.tornadocash.community"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="discourse"
@@ -45,10 +45,10 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://discord.com/invite/TFDrM8K42j"
+                  href="https://matrix.tornadocash.community"
                   target="_blank"
                   rel="noopener noreferrer"
-                  icon-right="discord"
+                  icon-right="matrix"
                 ></b-button>
                 <b-button
                   tag="a"
@@ -61,7 +61,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://twitter.com/TornadoCash"
+                  href="https://twitter.com/TornadoCashOrg"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="twitter"
@@ -69,7 +69,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://t.me/TornadoCashOfficial"
+                  href="https://t.me/TornadoCashOrg"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="telegram"
@@ -77,7 +77,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://github.com/tornadocash"
+                  href="https://development.tornadocash.community"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="github"
