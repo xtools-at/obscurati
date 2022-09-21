@@ -37,7 +37,7 @@
   "iBackedUpTheNote": "我已备份了凭证",
   "iEncryptedTheNote": "用您的账户{address}创建此凭证的链上备份",
   "yourNoteWontBeSaved": "你的存款凭证不会被存储在浏览器的缓存中，请确认已作好备份。",
-  "yourDontHaveAccount": "您还可以通过设置凭证账户将加密的凭证保存在链上。 在 {account} 页面上创建。",
+  "yourDontHaveAccount": "未能备份票据将导致资金损失",
   "sendDeposit": "发送存款",
   "clickToCopy": "点击复制",
   "copied": "已复制！",
