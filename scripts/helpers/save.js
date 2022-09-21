@@ -1,17 +1,37 @@
 import fs from 'fs'
-import zipper from 'zip-local'
+import Jszip from 'jszip'
 
-export function save(fileName) {
+const compressionConfig = {
+  type: "nodebuffer",
+  compression: "DEFLATE",
+  compressionOptions: {
+    level: 9
+  }
+}
+
+const fileConfig = {
+    binary: true,
+    compression: "DEFLATE"
+}
+
+export async function save(filePath) {
+  const jszip = new Jszip()
+  const directories = filePath.split('/')
+  const fileName = directories[directories.length - 1]
+
   try {
-    zipper.sync
-      .zip(`${fileName}`)
-      .compress()
-      .save(`${fileName}.zip`)
+    const data = fs.readFileSync(`${filePath}`)
 
-    fs.unlinkSync(fileName)
+    await jszip.file(`${fileName}`, data, fileConfig)
+    await jszip.generateNodeStream({
+      ...compressionConfig,
+      streamFiles: true
+    })
+    .pipe(fs.createWriteStream(`${filePath}.zip`))
+
     return true
   } catch (err) {
-    console.log('on save error', fileName, err.message)
+    console.log('on save error', filePath, err.message)
     return false
   }
 }
