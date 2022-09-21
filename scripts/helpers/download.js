@@ -30,14 +30,9 @@ export async function loadCachedEvents({ name, directory, deployedBlock }) {
     if (module) {
       const events = JSON.parse(module)
 
-      const [lastEvent] = JSON.parse(module).sort(
-        (a, b) => (b.block || b.blockNumber) - (a.block || a.blockNumber)
-      )
-      const lastBlock = lastEvent.block || lastEvent.blockNumber
-
       return {
         events,
-        lastBlock
+        lastBlock:  events[events.length - 1].blockNumber
       }
     }
   } catch (err) {
@@ -68,8 +63,7 @@ export async function getPastEvents({ type, fromBlock, netId, events, contractAt
   const blockDifference = Math.ceil(blockNumberBuffer - fromBlock)
 
   // eth_logs and eth_filter are restricted > 10,000 block queries
-  const blockDenom = blockDifference > 10000 ? 4950 : 20
-  const blockRange = blockDifference / blockDenom
+  const blockRange = 10000
 
   let chunksCount = blockDifference === 0 ? 1 : Math.ceil(blockDifference / blockRange)
   const chunkSize = Math.ceil(blockDifference / chunksCount)

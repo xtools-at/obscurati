@@ -14,7 +14,7 @@ class EventService {
     this.idb = window.$nuxt.$indexedDB(netId)
 
     const { nativeCurrency } = networkConfig[`netId${netId}`]
-    const hasCache = supportedCaches.indexOf(Number(this.netId)) !== 0
+    const hasCache = supportedCaches.includes(netId.toString())
 
     this.netId = netId
     this.amount = amount
@@ -37,6 +37,7 @@ class EventService {
     if (!cachedEvents && this.hasCache) {
       cachedEvents = await this.getEventsFromCache(type)
     }
+
     return cachedEvents
   }
   async updateEvents(type, cachedEvents) {
@@ -45,6 +46,7 @@ class EventService {
     const savedEvents = cachedEvents || (await this.getEvents(type))
 
     let fromBlock = deployedBlock
+
     if (savedEvents) {
       fromBlock = savedEvents.lastBlock + 1
     }
@@ -138,22 +140,23 @@ class EventService {
   async getEventsFromDB(type) {
     try {
       const instanceName = this.getInstanceName(type)
-
       const savedEvents = await this.idb.getAll({ storeName: instanceName })
 
       if (!savedEvents || !savedEvents.length) {
         return undefined
       }
 
-      const event = await this.idb.getFromIndex({
-        storeName: 'lastEvents',
-        indexName: 'name',
-        key: instanceName
+      // IndexedDB scrambles assortment
+      savedEvents.sort((a, b) => {
+        if (a.leafIndex && b.leafIndex) {
+          return a.leafIndex - b.leafIndex
+        }
+        return a.blockNumber - b.blockNumber
       })
 
       return {
         events: savedEvents,
-        lastBlock: event.blockNumber
+        lastBlock: savedEvents[savedEvents.length - 1].blockNumber
       }
     } catch (err) {
       return undefined
@@ -268,7 +271,7 @@ class EventService {
 
   async getBatchEventsFromRpc({ fromBlock, type }) {
     try {
-      const blockRange = 4950
+      const blockRange = 10000
       const { blockDifference, currentBlockNumber } = await this.getBlocksDiff({ fromBlock })
 
       let numberParts = blockDifference === 0 ? 1 : Math.ceil(blockDifference / blockRange)
@@ -311,15 +314,17 @@ class EventService {
 
   async getEventsFromRpc({ fromBlock, type }) {
     try {
+      const { blockDifference } = await this.getBlocksDiff({ fromBlock })
       let events
 
-      if (Number(this.netId) === 1) {
+      if (blockDifference < 10000) {
         const rpcEvents = await this.getEventsPartFromRpc({ fromBlock, toBlock: 'latest', type })
         events = rpcEvents?.events || []
       } else {
         const rpcEvents = await this.getBatchEventsFromRpc({ fromBlock, type })
         events = rpcEvents?.events || []
       }
+
       return events
     } catch (err) {
       return []
@@ -332,6 +337,7 @@ class EventService {
       const rpcEvents = await this.getEventsFromRpc({ fromBlock, type })
 
       const allEvents = [].concat(rpcEvents || [])
+
       if (allEvents.length) {
         return {
           events: allEvents,
