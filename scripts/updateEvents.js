@@ -64,7 +64,7 @@ async function main(type, netId) {
     let freshEvents = cachedEvents.events.concat(events)
 
     if (type === 'Withdrawal') {
-      freshEvents = uniqBy(freshEvents, 'nullifierHash').sort((a, b) => b.blockNumber - a.blockNumber)
+      freshEvents = uniqBy(freshEvents, 'nullifierHash').sort((a, b) => a.blockNumber - b.blockNumber)
     } else {
       freshEvents = freshEvents.filter((e, index) => Number(e.leafIndex) === index)
     }

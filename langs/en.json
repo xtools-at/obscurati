@@ -37,7 +37,7 @@
   "iBackedUpTheNote": "I backed up the note",
   "iEncryptedTheNote": "Create an on-chain backup of this note with your Account {address}",
   "yourNoteWontBeSaved": "Your note won't be saved in your browser. Please make sure it's backed up!",
-  "yourDontHaveAccount": "You can also save encrypted notes on-chain by setting up the Note Account. Create one on the {account} page.",
+  "yourDontHaveAccount": "FAILURE TO BACKUP NOTES WILL RESULT IN LOSS OF FUNDS",
   "sendDeposit": "Send Deposit",
   "clickToCopy": "Click to copy",
   "copied": "Copied!",
