@@ -9,6 +9,13 @@ import { sleep, formatEvents, capitalizeFirstLetter } from '@/utils'
 
 const supportedCaches = ['1', '56', '100', '137']
 
+let store
+if (process.browser) {
+  window.onNuxtReady(({ $store }) => {
+    store = $store
+  })
+}
+
 class EventService {
   constructor({ netId, amount, currency, factoryMethods }) {
     this.idb = window.$nuxt.$indexedDB(netId)
@@ -278,12 +285,16 @@ class EventService {
       const part = Math.ceil(blockDifference / numberParts)
 
       let events = []
+      let loadedBlocks = 0
       let toBlock = fromBlock + part
 
       if (fromBlock < currentBlockNumber) {
         if (toBlock >= currentBlockNumber) {
           toBlock = 'latest'
           numberParts = 1
+        }
+        if (store.state.loading.progress !== 98) {
+          store.dispatch('loading/updateProgress', { message: 'Fetching the past events', progress: 0 })
         }
 
         for (let i = 0; i < numberParts; i++) {
@@ -293,8 +304,18 @@ class EventService {
             if (partOfEvents) {
               events = events.concat(partOfEvents.events)
             }
+            loadedBlocks += toBlock - fromBlock
             fromBlock = toBlock
             toBlock += part
+
+            const progressInt = parseInt((loadedBlocks / blockDifference) * 100)
+            console.log('Progress: ', progressInt)
+            if (store.state.loading.progress !== 98) {
+              store.dispatch('loading/updateProgress', {
+                message: 'Fetching the past events',
+                progress: progressInt === 100 ? 98 : progressInt
+              })
+            }
           } catch {
             numberParts = numberParts + 1
           }

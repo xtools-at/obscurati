@@ -341,6 +341,7 @@ export default {
             if (currency !== this.nativeCurrency) {
               this.$store.dispatch('application/setDefaultEthToReceive', { currency })
             }
+            this.$store.dispatch('loading/updateProgress', { progress: -1 })
             this.depositsPast = Number(depositsPast) <= 0 ? 0 : depositsPast
             this.depositTxHash = txHash
             this.depositTimestamp = timestamp
