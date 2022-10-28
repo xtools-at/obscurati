@@ -1,4 +1,3 @@
-
 <template>
   <b-loading v-model="enabled">
     <div class="loading-container">
