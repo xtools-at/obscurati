@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import Web3 from 'web3'
-import Jszip from 'jszip'
+import zlib from 'zlib'
 import axios from 'axios'
+import Web3 from 'web3'
 import ENS, { getEnsAddress } from '@ensdomains/ensjs'
 
 import { detectMob } from '@/utils'
@@ -10,7 +10,6 @@ import networkConfig from '@/networkConfig'
 const { APP_ENS_NAME } = process.env
 
 const groth16 = require('websnark/src/groth16')
-const jszip = new Jszip()
 
 function buildGroth16() {
   const isMobile = detectMob()
@@ -26,10 +25,11 @@ function getEns() {
 async function getTornadoKeys(getProgress) {
   try {
     const keys = await Promise.all([
-      download({ name: 'tornado.json.zip', contentType: 'string' }),
-      download({ name: 'tornadoProvingKey.bin.zip', contentType: 'arraybuffer', getProgress })
+      download({ name: 'tornado.json.gz', contentType: 'string' }),
+      download({ name: 'tornadoProvingKey.bin.gz', contentType: 'arraybuffer', getProgress })
     ])
-    return { circuit: JSON.parse(keys[0]), provingKey: keys[1] }
+
+    return { circuit: JSON.parse(keys[0]), provingKey: keys[1].buffer }
   } catch (err) {
     throw err
   }
@@ -98,11 +98,8 @@ async function download({ name, contentType, getProgress, eventName = 'events' }
     // eslint-disable-next-line no-undef
     const prefix = __webpack_public_path__.slice(0, -7)
     const response = await fetchFile({ getProgress, url: prefix, name })
-
-    const zip = await jszip.loadAsync(response.data)
-    const file = zip.file(name.replace(`${eventName}/`, '').slice(0, -4))
-
-    const content = await file.async(contentType)
+    const buffer = Buffer.from(await response.data.arrayBuffer())
+    const content = zlib.inflateSync(buffer)
 
     return content
   } catch (err) {

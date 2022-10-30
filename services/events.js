@@ -123,7 +123,7 @@ class EventService {
 
       const module = await download({
         contentType: 'string',
-        name: `events/${instanceName}.json.zip`
+        name: `events/${instanceName}.json.gz`
       })
 
       if (module) {
