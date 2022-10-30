@@ -277,7 +277,7 @@ export default async (ctx, inject) => {
           },
           {
             name: `withdrawals_${token}_${amount}`,
-            keyPath: 'transactionHash',
+            keyPath: 'blockNumber',
             indexes: WITHDRAWAL_INDEXES
           },
           {

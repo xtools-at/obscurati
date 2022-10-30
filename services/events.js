@@ -153,14 +153,6 @@ class EventService {
         return undefined
       }
 
-      // IndexedDB scrambles assortment
-      savedEvents.sort((a, b) => {
-        if (a.leafIndex && b.leafIndex) {
-          return a.leafIndex - b.leafIndex
-        }
-        return a.blockNumber - b.blockNumber
-      })
-
       return {
         events: savedEvents,
         lastBlock: savedEvents[savedEvents.length - 1].blockNumber
