@@ -2,7 +2,6 @@
 import zlib from 'zlib'
 import axios from 'axios'
 import Web3 from 'web3'
-import ENS, { getEnsAddress } from '@ensdomains/ensjs'
 
 import { detectMob } from '@/utils'
 import networkConfig from '@/networkConfig'
@@ -18,8 +17,10 @@ function buildGroth16() {
 }
 
 function getEns() {
-  const provider = new Web3.providers.HttpProvider(networkConfig.netId1.rpcUrls.Infura.url)
-  return new ENS({ provider, ensAddress: getEnsAddress('1') })
+  const { url } = Object.values(networkConfig.netId1.rpcUrls)[0]
+  const provider = new Web3(new Web3.providers.HttpProvider(url))
+
+  return provider.eth.ens
 }
 
 async function getTornadoKeys(getProgress) {
@@ -31,19 +32,17 @@ async function getTornadoKeys(getProgress) {
 
     return { circuit: JSON.parse(keys[0]), provingKey: keys[1].buffer }
   } catch (err) {
+    console.log('ERR', err)
     throw err
   }
 }
 
 async function getIPFSIdFromENS(ensName) {
   try {
-    const ens = getEns()
+    const ensInterface = getEns()
+    const { decoded } = await ensInterface.getContenthash(ensName)
 
-    const ensInterface = await ens.name(ensName)
-    const { value } = await ensInterface.getContent(ensName)
-
-    const [, id] = value.split('://')
-    return id
+    return decoded
   } catch (err) {
     throw new Error(err)
   }
