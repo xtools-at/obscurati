@@ -8,6 +8,19 @@ export * from './stringUtils'
 export * from './numberUtils'
 export * from './instanceUtils'
 
+const PREFIX_INDEX = 1
+
+export function flattenNArray(arr) {
+  return arr.reduce((flat, toFlatten) => {
+    return flat.concat(Array.isArray(toFlatten) ? flattenNArray(toFlatten) : toFlatten)
+  }, [])
+}
+
+export const getIPFSPrefix = () => {
+  const ipfsPathRegExp = /^(\/(?:ipfs|ipns)\/[^/]+)/
+  return (window.location.pathname.match(ipfsPathRegExp) ?? [])[PREFIX_INDEX] || ''
+}
+
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }

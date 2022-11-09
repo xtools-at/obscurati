@@ -1,20 +1,21 @@
 import Web3 from 'web3'
 
+import EWorker from '@/assets/events.worker.js'
+
 import graph from '@/services/graph'
 import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import InstanceABI from '@/abis/Instance.abi.json'
 import { CONTRACT_INSTANCES, eventsType } from '@/constants'
-import { sleep, formatEvents, capitalizeFirstLetter } from '@/utils'
+import { sleep, formatEvents, capitalizeFirstLetter, flattenNArray } from '@/utils'
+
+const MIN_CORES = 2
+const WORKERS_ALLOC = 2
+const HARDWARE_CORES = window.navigator.hardwareConcurrency
+const AVAILABLE_CORES = HARDWARE_CORES / WORKERS_ALLOC || MIN_CORES
+const CORES = Math.max(AVAILABLE_CORES, MIN_CORES)
 
 const supportedCaches = ['1', '56', '100', '137']
-
-let store
-if (process.browser) {
-  window.onNuxtReady(({ $store }) => {
-    store = $store
-  })
-}
 
 class EventService {
   constructor({ netId, amount, currency, factoryMethods }) {
@@ -28,6 +29,7 @@ class EventService {
     this.currency = currency
 
     this.factoryMethods = factoryMethods
+    this.rpcUrl = this.factoryMethods.getProviderUrl()
     this.contract = this.getContract({ netId, amount, currency })
 
     this.isNative = nativeCurrency === this.currency
@@ -36,6 +38,17 @@ class EventService {
 
   getInstanceName(type) {
     return `${type}s_${this.currency}_${this.amount}`
+  }
+
+  getMessageParams(eventName, type) {
+    return {
+      type: capitalizeFirstLetter(type),
+      currency: this.currency,
+      rpcUrl: this.rpcUrl,
+      amount: this.amount,
+      netId: this.netId,
+      eventName
+    }
   }
 
   async getEvents(type) {
@@ -47,6 +60,7 @@ class EventService {
 
     return cachedEvents
   }
+
   async updateEvents(type, cachedEvents) {
     const { deployedBlock } = networkConfig[`netId${this.netId}`]
 
@@ -273,56 +287,63 @@ class EventService {
       const blockRange = 10000
       const { blockDifference, currentBlockNumber } = await this.getBlocksDiff({ fromBlock })
 
-      let numberParts = blockDifference === 0 ? 1 : Math.ceil(blockDifference / blockRange)
-      const part = Math.ceil(blockDifference / numberParts)
-
-      let events = []
-      let loadedBlocks = 0
-      let toBlock = fromBlock + part
+      const chunks = blockDifference === 0 ? 1 : Math.ceil(blockDifference / blockRange)
+      const chunkSize = Math.ceil(blockDifference / chunks)
 
       if (fromBlock < currentBlockNumber) {
-        if (toBlock >= currentBlockNumber) {
-          toBlock = 'latest'
-          numberParts = 1
-        }
-        if (store.state.loading.progress !== 98) {
-          store.dispatch('loading/updateProgress', { message: 'Fetching the past events', progress: 0 })
-        }
+        const chunk = Math.ceil(chunks / CORES)
+        const digest = new Array(chunks).fill('')
+        const workers = new Array(CORES).fill('')
 
-        for (let i = 0; i < numberParts; i++) {
-          try {
-            await sleep(200)
-            const partOfEvents = await this.getEventsPartFromRpc({ fromBlock, toBlock, type })
-            if (partOfEvents) {
-              events = events.concat(partOfEvents.events)
-            }
-            loadedBlocks += toBlock - fromBlock
-            fromBlock = toBlock
-            toBlock += part
+        const blocks = digest.map((e, i) => chunkSize * (i + 1) + fromBlock)
 
-            const progressInt = parseInt((loadedBlocks / blockDifference) * 100)
-            console.log('Progress: ', progressInt)
-            if (store.state.loading.progress !== 98) {
-              store.dispatch('loading/updateProgress', {
-                message: 'Fetching the past events',
-                progress: progressInt === 100 ? 98 : progressInt
-              })
+        const workerBatches = workers.map((e, i) => {
+          const endIndex = (i + 1) * chunk
+          const startIndex = endIndex - chunk
+
+          return this.openEventThreadPool({
+            ...this.getMessageParams('batch_events', type),
+            payload: {
+              blocks: blocks.slice(startIndex, endIndex),
+              chunkSize
             }
-          } catch {
-            numberParts = numberParts + 1
-          }
-        }
-        if (events.length) {
-          return {
-            events,
-            lastBlock: toBlock === 'latest' ? currentBlockNumber : toBlock
-          }
+          })
+        })
+
+        const results = flattenNArray(await Promise.all(workerBatches))
+        const events = results.map((e) => ({ ...e.returnValues, ...e }))
+
+        return {
+          lastBlock: events[events.length - 1].blockNumber,
+          events
         }
       }
       return undefined
     } catch (err) {
       return undefined
     }
+  }
+
+  openEventThreadPool(message) {
+    return new Promise((resolve, reject) => {
+      // const ipfsPathPrefix = getIPFSPrefix()
+      // const basePath = `${window.location.origin}${ipfsPathPrefix}`
+      // const worker = new Worker(basePath + '/assets/events.workers.js')
+      const worker = new EWorker()
+      const channel = new MessageChannel()
+
+      worker.postMessage(message, [channel.port2])
+
+      channel.port1.onmessage = ({ data }) => {
+        const { result, errorMessage } = data
+        channel.port1.close()
+        if (result) {
+          resolve(result)
+        } else {
+          reject(errorMessage)
+        }
+      }
+    })
   }
 
   async getEventsFromRpc({ fromBlock, type }) {
@@ -404,6 +425,10 @@ class EventsFactory {
     return new this.provider.Contract(InstanceABI, address)
   }
 
+  getProviderUrl = () => {
+    return this.provider.currentProvider.host
+  }
+
   getService = (payload) => {
     const instanceName = `${payload.currency}_${payload.amount}`
 
@@ -415,7 +440,8 @@ class EventsFactory {
       ...payload,
       factoryMethods: {
         getContract: this.getContract,
-        getBlockNumber: this.getBlockNumber
+        getBlockNumber: this.getBlockNumber,
+        getProviderUrl: this.getProviderUrl
       }
     })
     this.instances.set(instanceName, instance)

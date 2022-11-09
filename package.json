@@ -16,6 +16,7 @@
     "update:tree": "node -r esm scripts/updateTree.js --network",
     "generate": "NODE_OPTIONS='--max-old-space-size=8192' nuxt generate && cp dist/404.html dist/ipfs-404.html",
     "check:sync": "node -r esm scripts/checkEventsSync.js",
+    "worker:compile": "babel dist/_nuxt/workers/events.worker.js --out-file static/events.worker.js",
     "ipfsUpload": "node scripts/ipfsUpload.js",
     "deploy:ipfs": "yarn generate && yarn ipfsUpload"
   },
@@ -55,6 +56,7 @@
     "vue-i18n": "^8.15.4",
     "vuex-persistedstate": "^2.7.0",
     "web3": "1.5.2",
+    "web3-eth": "1.8.1-rc.0",
     "websnark": "git+https://development.tornadocash.community/tornadocash/websnark.git#671762fab73f01771d0e7ebcf6b6a3123e193fb4"
   },
   "devDependencies": {
@@ -85,6 +87,7 @@
     "raw-loader": "^3.1.0",
     "sass": "^1.49.9",
     "sass-loader": "^8.0.0",
-    "vue-jest": "^3.0.5"
+    "vue-jest": "^3.0.5",
+    "worker-loader": "^3.0.8"
   }
 }

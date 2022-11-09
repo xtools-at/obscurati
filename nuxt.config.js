@@ -50,7 +50,7 @@ export default {
       {
         'http-equiv': 'Content-Security-Policy',
         content:
-          "img-src 'self' data:;font-src data:;style-src 'self' 'unsafe-inline';connect-src *;script-src 'self' 'unsafe-eval' 'unsafe-inline';default-src 'self';object-src 'none';base-uri 'none';upgrade-insecure-requests;child-src blob:;worker-src blob:;"
+          "img-src 'self' data:;font-src data:;style-src 'self' 'unsafe-inline';connect-src *;script-src 'self' 'unsafe-eval' 'unsafe-inline';default-src 'self';object-src 'none';base-uri 'none';upgrade-insecure-requests; "
       },
       {
         name: 'Referer-Policy',
@@ -178,10 +178,23 @@ export default {
       if (ctx.isClient) {
         config.devtool = hasSourceMaps
       }
+
+      config.output.globalObject = 'this'
+
       config.module.rules.push({
         test: /\.bin$/,
         use: 'arraybuffer-loader'
       })
+      if(ctx.isClient) {
+        config.module.rules.push({
+          test: /\.worker\.js$/,
+          loader: 'worker-loader',
+          exclude: /(node_modules)/,
+          options: {
+            filename: './workers/[name].js',
+          }
+        })
+      }
     },
     plugins: [
       new webpack.IgnorePlugin(/worker_threads/),
