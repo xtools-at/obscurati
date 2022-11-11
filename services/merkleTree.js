@@ -22,12 +22,12 @@ class MerkleTreeService {
       commitment,
       instanceName,
       fileFolder: 'trees',
-      fileName: `deposits_${currency}_${amount}_bloom.json.zip`
+      fileName: `deposits_${currency}_${amount}_bloom.json.gz`
     })
   }
 
   getFileName(partNumber = trees.PARTS_COUNT) {
-    return `trees/deposits_${this.currency}_${this.amount}_slice${partNumber}.json.zip`
+    return `trees/deposits_${this.currency}_${this.amount}_slice${partNumber}.json.gz`
   }
 
   createTree({ events }) {

@@ -358,7 +358,7 @@ const actions = {
     try {
       const module = await download({
         contentType: 'string',
-        name: `events/encrypted_notes_${netId}.json.zip`
+        name: `events/encrypted_notes_${netId}.json.gz`
       })
 
       if (module) {
