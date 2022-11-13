@@ -276,7 +276,8 @@ class EventService {
         try {
           events = await Promise.resolve(rpcRequest)
         } catch (e) {
-          await sleep(200)
+          // maximum 10 second buffer for rate-limiting
+          await sleep(2000 * i)
 
           events = await this.getEventsPartFromRpc(
             {
@@ -353,6 +354,7 @@ class EventService {
 
           this.updateEventProgress(batchIndex / batchCount, type)
           events = events.concat(batch)
+          await sleep(200)
         }
 
         events = flattenNArray(events)
