@@ -9,6 +9,13 @@ import { sleep, flattenNArray, formatEvents, capitalizeFirstLetter } from '@/uti
 
 const supportedCaches = ['1', '56', '100', '137']
 
+let store
+if (process.browser) {
+  window.onNuxtReady(({ $store }) => {
+    store = $store
+  })
+}
+
 class EventService {
   constructor({ netId, amount, currency, factoryMethods }) {
     this.idb = window.$nuxt.$indexedDB(netId)
@@ -29,6 +36,13 @@ class EventService {
 
   getInstanceName(type) {
     return `${type}s_${this.currency}_${this.amount}`
+  }
+
+  updateEventProgress(percentage, type) {
+    store.dispatch('loading/updateProgress', {
+      message: `Fetching past ${type} events`,
+      progress: Math.ceil(percentage * 100)
+    })
   }
 
   async getEvents(type) {
@@ -315,6 +329,8 @@ class EventService {
   }
 
   async getBatchEventsFromRpc({ fromBlock, type }) {
+    this.updateEventProgress(0, type)
+
     try {
       const batchSize = 10
       const blockRange = 10000
@@ -335,6 +351,7 @@ class EventService {
             this.createBatchRequest({ batchIndex, batchBlocks, blockDenom, batchSize, type })
           )
 
+          this.updateEventProgress(batchIndex / batchCount, type)
           events = events.concat(batch)
         }
 

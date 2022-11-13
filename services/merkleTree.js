@@ -5,7 +5,7 @@ import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import { mimc, bloomService } from '@/services'
 
-const supportedCaches = ['1', '56', '100', '137', '5']
+const supportedCaches = ['1', '56', '100', '137']
 
 class MerkleTreeService {
   constructor({ netId, amount, currency, commitment, instanceName }) {
