@@ -39,10 +39,12 @@ class EventService {
   }
 
   updateEventProgress(percentage, type) {
-    store.dispatch('loading/updateProgress', {
-      message: `Fetching past ${type} events`,
-      progress: Math.ceil(percentage * 100)
-    })
+    if (store) {
+      store.dispatch('loading/updateProgress', {
+        message: `Fetching past ${type} events`,
+        progress: Math.ceil(percentage * 100)
+      })
+    }
   }
 
   async getEvents(type) {
@@ -54,6 +56,7 @@ class EventService {
 
     return cachedEvents
   }
+
   async updateEvents(type, cachedEvents) {
     const { deployedBlock } = networkConfig[`netId${this.netId}`]
 
@@ -244,6 +247,21 @@ class EventService {
     }
   }
 
+  getPastEvents({ fromBlock, toBlock, type }) {
+    return new Promise((resolve, reject) => {
+      const repsonse = this.contract.getPastEvents(capitalizeFirstLetter(type), {
+        fromBlock,
+        toBlock
+      })
+
+      if (repsonse) {
+        resolve(repsonse)
+      } else {
+        reject(new Error())
+      }
+    })
+  }
+
   async getEventsPartFromRpc({ fromBlock, toBlock, type }, shouldRetry = false, i = 0) {
     try {
       const { currentBlockNumber } = await this.getBlocksDiff({ fromBlock })
@@ -255,27 +273,13 @@ class EventService {
         }
       }
 
-      const rpcRequest = new Promise((resolve, reject) => {
-        const repsonse = this.contract.getPastEvents(capitalizeFirstLetter(type), {
-          fromBlock,
-          toBlock
-        })
-
-        if (repsonse) {
-          resolve(repsonse)
-        } else {
-          reject(new Error())
-        }
-      })
-
       let events = []
 
-      if (shouldRetry) {
-        i = i + 1
-
-        try {
-          events = await Promise.resolve(rpcRequest)
-        } catch (e) {
+      try {
+        events = await this.getPastEvents({ fromBlock, toBlock, type })
+      } catch (e) {
+        if (shouldRetry) {
+          i = i + 1
           // maximum 10 second buffer for rate-limiting
           await sleep(2000 * i)
 
@@ -289,8 +293,6 @@ class EventService {
             i
           )
         }
-      } else {
-        events = await Promise.resolve(rpcRequest)
       }
 
       if (!events?.length) {
@@ -310,7 +312,7 @@ class EventService {
 
   createBatchRequest({ batchIndex, batchSize, batchBlocks, blockDenom, type }) {
     return new Array(batchSize).fill('').map(
-      (e, i) =>
+      (_, i) =>
         new Promise(async (resolve) => {
           const toBlock = batchBlocks[batchIndex * batchSize + i]
           const fromBlock = toBlock - blockDenom
@@ -342,7 +344,7 @@ class EventService {
       const batchCount = Math.ceil(batchDigest / batchSize)
 
       const blocks = new Array(batchCount * batchSize).fill('')
-      const batchBlocks = blocks.map((e, i) => (i + 1) * blockDenom + fromBlock)
+      const batchBlocks = blocks.map((_, i) => (i + 1) * blockDenom + fromBlock)
 
       let events = []
 

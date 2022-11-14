@@ -37,6 +37,14 @@
                 <b-button
                   tag="a"
                   type="is-icon"
+                  href="https://development.tornadocash.community/tornadocash/classic-ui"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  icon-right="git"
+                ></b-button>
+                <b-button
+                  tag="a"
+                  type="is-icon"
                   href="https://github.com/tornadocash"
                   target="_blank"
                   rel="noopener noreferrer"
