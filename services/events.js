@@ -441,7 +441,23 @@ class EventsFactory {
   instances = new Map()
 
   constructor(rpcUrl) {
-    this.provider = new Web3(rpcUrl).eth
+    this.provider = new Web3(
+      new Web3.providers.HttpProvider(rpcUrl, {
+        headers: [
+          {
+            name: 'Access-Control-Allow-Origin',
+            value: rpcUrl
+          },
+          {
+            name: 'Access-Control-Allow-Methods',
+            value: 'POST, GET, OPTIONS'
+          }
+        ],
+        withCredentials: false,
+        // buffer for tor connections
+        timeout: 30000
+      })
+    ).eth
   }
 
   getBlockNumber = () => {

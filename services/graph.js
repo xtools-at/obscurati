@@ -39,6 +39,7 @@ const defaultOptions = {
 
 const client = new ApolloClient({
   uri: link,
+  credentials: 'same-origin',
   cache: new InMemoryCache(),
   defaultOptions
 })
@@ -46,6 +47,7 @@ const client = new ApolloClient({
 const registryClient = new ApolloClient({
   uri: 'https://api.thegraph.com/subgraphs/name/tornadocash/tornado-relayer-registry',
   cache: new InMemoryCache(),
+  credentials: 'same-origin',
   defaultOptions
 })
 
