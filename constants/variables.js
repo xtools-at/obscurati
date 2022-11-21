@@ -60,6 +60,22 @@ export const cachedEventsLength = {
   }
 }
 
+export const corsConfig = (rpcUrl) => ({
+  headers: [
+    {
+      name: 'Access-Control-Allow-Origin',
+      value: rpcUrl
+    },
+    {
+      name: 'Access-Control-Allow-Methods',
+      value: 'POST, GET, OPTIONS'
+    }
+  ],
+  withCredentials: false,
+  // buffer for tor connections
+  timeout: 30000
+})
+
 export const PROVIDERS = {
   walletConnect: {
     name: 'WalletConnect',

@@ -4,7 +4,7 @@ import graph from '@/services/graph'
 import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import InstanceABI from '@/abis/Instance.abi.json'
-import { CONTRACT_INSTANCES, eventsType } from '@/constants'
+import { CONTRACT_INSTANCES, eventsType, corsConfig } from '@/constants'
 import { sleep, flattenNArray, formatEvents, capitalizeFirstLetter } from '@/utils'
 
 const supportedCaches = ['1', '56', '100', '137']
@@ -441,23 +441,9 @@ class EventsFactory {
   instances = new Map()
 
   constructor(rpcUrl) {
-    this.provider = new Web3(
-      new Web3.providers.HttpProvider(rpcUrl, {
-        headers: [
-          {
-            name: 'Access-Control-Allow-Origin',
-            value: rpcUrl
-          },
-          {
-            name: 'Access-Control-Allow-Methods',
-            value: 'POST, GET, OPTIONS'
-          }
-        ],
-        withCredentials: false,
-        // buffer for tor connections
-        timeout: 30000
-      })
-    ).eth
+    const httpProvider = new Web3.providers.HttpProvider(rpcUrl, corsConfig(rpcUrl))
+
+    this.provider = new Web3(httpProvider).eth
   }
 
   getBlockNumber = () => {
