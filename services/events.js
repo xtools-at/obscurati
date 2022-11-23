@@ -4,7 +4,7 @@ import graph from '@/services/graph'
 import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import InstanceABI from '@/abis/Instance.abi.json'
-import { CONTRACT_INSTANCES, eventsType, corsConfig } from '@/constants'
+import { CONTRACT_INSTANCES, eventsType, httpConfig } from '@/constants'
 import { sleep, flattenNArray, formatEvents, capitalizeFirstLetter } from '@/utils'
 
 const supportedCaches = ['1', '56', '100', '137']
@@ -332,8 +332,6 @@ class EventService {
   }
 
   async getBatchEventsFromRpc({ fromBlock, type }) {
-    this.updateEventProgress(0, type)
-
     try {
       const batchSize = 10
       const blockRange = 10000
@@ -349,6 +347,8 @@ class EventService {
       let events = []
 
       if (fromBlock < currentBlockNumber) {
+        this.updateEventProgress(0, type)
+
         for (let batchIndex = 0; batchIndex < batchCount; batchIndex++) {
           const batch = await Promise.all(
             this.createBatchRequest({ batchIndex, batchBlocks, blockDenom, batchSize, type })
@@ -375,10 +375,11 @@ class EventService {
   async getEventsFromRpc({ fromBlock, type }) {
     try {
       const { blockDifference } = await this.getBlocksDiff({ fromBlock })
+      const blockRange = 10000
 
       let events
 
-      if (blockDifference < 10000) {
+      if (blockDifference < blockRange) {
         const rpcEvents = await this.getEventsPartFromRpc({ fromBlock, toBlock: 'latest', type })
         events = rpcEvents?.events || []
       } else {
@@ -441,7 +442,7 @@ class EventsFactory {
   instances = new Map()
 
   constructor(rpcUrl) {
-    const httpProvider = new Web3.providers.HttpProvider(rpcUrl, corsConfig(rpcUrl))
+    const httpProvider = new Web3.providers.HttpProvider(rpcUrl, httpConfig)
 
     this.provider = new Web3(httpProvider).eth
   }

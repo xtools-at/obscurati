@@ -4,7 +4,7 @@ import { BigNumber as BN } from 'bignumber.js'
 import { toChecksumAddress, isAddress } from 'web3-utils'
 
 import networkConfig from '@/networkConfig'
-import { REGISTRY_DEPLOYED_BLOCK, corsConfig } from '@/constants'
+import { REGISTRY_DEPLOYED_BLOCK } from '@/constants'
 import { sleep, flattenNArray } from '@/utils'
 
 import AggregatorABI from '@/abis/Aggregator.abi.json'
@@ -25,9 +25,9 @@ class RelayerRegister {
     this.relayerRegistry = new this.provider.Contract(RelayerRegistryABI, registryContract)
   }
 
-  fetchEvents = ({ fromBlock, toBlock }) => {
-    if (fromBlock <= toBlock) {
-      return new Promise((resolve, reject) => {
+  fetchEvents = ({ fromBlock, toBlock }, shouldRetry = false) => {
+    return new Promise((resolve, reject) => {
+      if (fromBlock <= toBlock) {
         try {
           const registeredEventsPart = this.relayerRegistry.getPastEvents('RelayerRegistered', {
             fromBlock,
@@ -36,22 +36,20 @@ class RelayerRegister {
 
           resolve(registeredEventsPart)
         } catch (error) {
-          sleep(200)
+          if (shouldRetry) {
+            sleep(1000)
 
-          const midBlock = (fromBlock + toBlock) >> 1
+            const events = this.fetchEvents({ fromBlock, toBlock })
 
-          if (midBlock - fromBlock < 2) {
-            reject(new Error(`error fetching events: ${error.message}`))
+            resolve(events)
+          } else {
+            reject(new Error(error))
           }
-
-          const arr1 = this.fetchEvents({ fromBlock, toBlock: midBlock })
-          const arr2 = this.fetchEvents({ fromBlock: midBlock + 1, toBlock })
-          resolve([...arr1, ...arr2])
         }
-      })
-    } else {
-      return []
-    }
+      } else {
+        resolve([])
+      }
+    })
   }
 
   batchFetchEvents = async ({ fromBlock, toBlock }) => {
@@ -60,11 +58,20 @@ class RelayerRegister {
     const chunkCount = Math.ceil(blockDifference / blockRange)
     const blockDenom = Math.ceil(blockDifference / chunkCount)
 
-    const promises = new Array(chunkCount).fill('').map((_, i) =>
-      this.fetchEvents({
-        fromBlock: i * blockDenom + fromBlock,
-        toBlock: (i + 1) * blockDenom + fromBlock
-      })
+    const promises = new Array(chunkCount).fill('').map(
+      (_, i) =>
+        new Promise((resolve) => {
+          sleep(300)
+
+          const batch = this.fetchEvents(
+            {
+              fromBlock: i * blockDenom + fromBlock,
+              toBlock: (i + 1) * blockDenom + fromBlock
+            },
+            true
+          )
+          resolve(batch)
+        })
     )
 
     const batchEvents = flattenNArray(await Promise.all(promises))
@@ -123,8 +130,7 @@ class RelayerRegister {
 
   getENSAddress = async (ensName) => {
     const { url } = Object.values(networkConfig.netId1.rpcUrls)[0]
-    const httpProvider = new Web3.providers.HttpProvider(url, corsConfig(url))
-    const provider = new Web3(httpProvider)
+    const provider = new Web3(url)
 
     const ensAddress = await provider.eth.ens.getAddress(ensName)
 
@@ -144,24 +150,21 @@ class RelayerRegister {
     try {
       let toBlock
       let registerRelayerEvents
-      let lastBlock
+      let lastSyncBlock = blockTo
 
       if (cachedEvents.length > 0 || blockDifference === 0) {
         return cachedEvents
       } else if (blockDifference >= blockRange) {
         toBlock = currentBlockNumber
         registerRelayerEvents = await this.batchFetchEvents({ fromBlock, toBlock })
-        lastBlock = toBlock
+        lastSyncBlock = toBlock
       } else {
         toBlock = fromBlock + blockRange
-        registerRelayerEvents = await this.fetchEvents({ fromBlock, toBlock })
-        lastBlock = toBlock
+        registerRelayerEvents = await this.fetchEvents({ fromBlock, toBlock }, true)
+        lastSyncBlock = toBlock
       }
 
-      const lastIndex = registerRelayerEvents.length - 1
-      const lastSyncBlock = registerRelayerEvents[lastIndex]?.blockNumber || lastBlock
       const relayerEvents = cachedEvents.concat(registerRelayerEvents || [])
-
       const events = []
 
       for (let x = 0; x < relayerEvents.length; x++) {
@@ -180,8 +183,8 @@ class RelayerRegister {
       await this.saveEvents({ storeName: 'register_events', lastSyncBlock, events })
 
       allRelayers = allRelayers.concat(events)
-    } catch (e) {
-      return cachedEvents
+    } catch (err) {
+      console.log(err)
     }
     return allRelayers
   }
