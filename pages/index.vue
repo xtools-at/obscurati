@@ -158,8 +158,19 @@ export default {
           }
         }
       } else {
-        const { currency, amount } = this.selectedInstance
-        this.$store.dispatch('application/setAndUpdateStatistic', { currency, amount })
+        const userSelection = this.selectedInstance
+        const stateSelection = this.selectedStatistic
+
+        if (
+          !stateSelection ||
+          userSelection.amount !== stateSelection.amount ||
+          userSelection.currency !== stateSelection.currency
+        ) {
+          this.$store.dispatch('application/setAndUpdateStatistic', {
+            currency: userSelection.currency,
+            amount: userSelection.amount
+          })
+        }
       }
     }
   }
