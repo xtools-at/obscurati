@@ -60,6 +60,12 @@ export const cachedEventsLength = {
   }
 }
 
+export const httpConfig = {
+  // buffer for tor connections
+  timeout: 30000,
+  keepAlive: true
+}
+
 export const PROVIDERS = {
   walletConnect: {
     name: 'WalletConnect',

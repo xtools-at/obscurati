@@ -45,7 +45,7 @@ function createTreeZip(netId) {
 
         treesFolder.forEach((fileName) => {
           fileName = `${TREES_PATH}${fileName}`
-          const isInstanceFile = !fileName.includes('.zip') && fileName.includes(baseFilename)
+          const isInstanceFile = !fileName.includes('.gz') && fileName.includes(baseFilename)
 
           if (isInstanceFile) {
             save(fileName)

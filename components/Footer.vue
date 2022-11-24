@@ -37,47 +37,15 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://forums.tornadocash.community"
+                  href="https://development.tornadocash.community/tornadocash/classic-ui"
                   target="_blank"
                   rel="noopener noreferrer"
-                  icon-right="discourse"
+                  icon-right="git"
                 ></b-button>
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://matrix.tornadocash.community"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon-right="matrix"
-                ></b-button>
-                <b-button
-                  tag="a"
-                  type="is-icon"
-                  href="https://tornado-cash.medium.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon-right="medium"
-                ></b-button>
-                <b-button
-                  tag="a"
-                  type="is-icon"
-                  href="https://twitter.com/TornadoCashOrg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon-right="twitter"
-                ></b-button>
-                <b-button
-                  tag="a"
-                  type="is-icon"
-                  href="https://t.me/TornadoCashOrg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  icon-right="telegram"
-                ></b-button>
-                <b-button
-                  tag="a"
-                  type="is-icon"
-                  href="https://development.tornadocash.community"
+                  href="https://github.com/tornadocash"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="github"

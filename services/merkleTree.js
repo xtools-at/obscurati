@@ -5,6 +5,8 @@ import { download } from '@/store/snark'
 import networkConfig from '@/networkConfig'
 import { mimc, bloomService } from '@/services'
 
+const supportedCaches = ['1', '56', '100', '137']
+
 class MerkleTreeService {
   constructor({ netId, amount, currency, commitment, instanceName }) {
     this.netId = netId
@@ -20,12 +22,12 @@ class MerkleTreeService {
       commitment,
       instanceName,
       fileFolder: 'trees',
-      fileName: `deposits_${currency}_${amount}_bloom.json.zip`
+      fileName: `deposits_${currency}_${amount}_bloom.json.gz`
     })
   }
 
   getFileName(partNumber = trees.PARTS_COUNT) {
-    return `trees/deposits_${this.currency}_${this.amount}_slice${partNumber}.json.zip`
+    return `trees/deposits_${this.currency}_${this.amount}_slice${partNumber}.json.gz`
   }
 
   createTree({ events }) {
@@ -153,8 +155,7 @@ class MerkleTreeService {
   }
 
   async getTree() {
-    const { nativeCurrency } = networkConfig[`netId${this.netId}`]
-    const hasCache = nativeCurrency === this.currency && Number(this.netId) === 1
+    const hasCache = supportedCaches.includes(this.netId.toString())
 
     let cachedTree = await this.getTreeFromDB()
 

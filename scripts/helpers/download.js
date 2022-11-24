@@ -1,24 +1,14 @@
 import fs from 'fs'
-import Jszip from 'jszip'
+import zlib from 'zlib'
 import Web3 from 'web3'
+
 import networkConfig from '../../networkConfig'
 
-const jszip = new Jszip()
-
 export async function download({ name, directory, contentType }) {
-  const path = `${directory}${name}.zip`.toLowerCase()
+  const path = `${directory}${name}.gz`.toLowerCase()
 
   const data = fs.readFileSync(path)
-  const zip = await jszip.loadAsync(data)
-
-  const file = zip.file(
-    path
-      .replace(directory, '')
-      .slice(0, -4)
-      .toLowerCase()
-  )
-
-  const content = await file.async(contentType)
+  const content = zlib.inflateSync(data)
 
   return content
 }

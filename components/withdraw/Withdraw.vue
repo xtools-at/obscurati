@@ -51,8 +51,7 @@
         data-test="enter_note_field"
       ></b-input>
       <div v-if="hasErrorNote" class="help" :class="hasErrorNote.type">
-        <!-- eslint-disable vue/no-v-html -->
-        <p v-html="hasErrorNote.msg"></p>
+        <p>{{ hasErrorNote.msg }}</p>
       </div>
     </div>
     <div v-if="!hasErrorNote && depositTxHash" class="field field-withdraw">
@@ -341,6 +340,7 @@ export default {
             if (currency !== this.nativeCurrency) {
               this.$store.dispatch('application/setDefaultEthToReceive', { currency })
             }
+            this.$store.dispatch('loading/updateProgress', { progress: -1 })
             this.depositsPast = Number(depositsPast) <= 0 ? 0 : depositsPast
             this.depositTxHash = txHash
             this.depositTimestamp = timestamp

@@ -1,33 +1,19 @@
 import fs from 'fs'
-import Jszip from 'jszip'
-
-const compressionConfig = {
-  type: "nodebuffer",
-  compression: "DEFLATE",
-  compressionOptions: {
-    level: 9
-  }
-}
-
-const fileConfig = {
-    binary: true,
-    compression: "DEFLATE"
-}
+import zlib from 'zlib'
 
 export async function save(filePath) {
-  const jszip = new Jszip()
   const directories = filePath.split('/')
   const fileName = directories[directories.length - 1]
 
   try {
     const data = fs.readFileSync(`${filePath}`)
 
-    await jszip.file(`${fileName}`, data, fileConfig)
-    await jszip.generateNodeStream({
-      ...compressionConfig,
-      streamFiles: true
+    const payload = await zlib.deflateSync(data, {
+      level: zlib.constants.Z_BEST_COMPRESSION,
+      strategy: zlib.constants.Z_FILTERED
     })
-    .pipe(fs.createWriteStream(`${filePath}.zip`))
+
+    fs.writeFileSync(`${filePath}.gz`, payload)
 
     return true
   } catch (err) {

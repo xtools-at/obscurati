@@ -3,7 +3,7 @@
 import Web3 from 'web3'
 
 import networkConfig from '@/networkConfig'
-import { cachedEventsLength, eventsType } from '@/constants'
+import { cachedEventsLength, eventsType, httpConfig } from '@/constants'
 
 import MulticallABI from '@/abis/Multicall.json'
 import InstanceABI from '@/abis/Instance.abi.json'
@@ -117,7 +117,8 @@ const getters = {
     const config = networkConfig[`netId${netId}`]
     const { url } = rootState.settings[`netId${netId}`].rpc
     const address = config.tokens[currency].instanceAddress[amount]
-    const web3 = new Web3(url)
+    const httpProvider = new Web3.providers.HttpProvider(url, httpConfig)
+    const web3 = new Web3(httpProvider)
     return new web3.eth.Contract(InstanceABI, address)
   },
   multicallContract: (state, getters, rootState) => ({ netId }) => {
@@ -258,6 +259,7 @@ const getters = {
 const actions = {
   setAndUpdateStatistic({ dispatch, commit }, { currency, amount }) {
     commit('SET_SELECTED_STATISTIC', { currency, amount })
+
     dispatch('updateSelectEvents')
   },
   async updateSelectEvents({ dispatch, commit, state, rootGetters, getters }) {
@@ -265,15 +267,14 @@ const actions = {
     const { currency, amount } = state.selectedStatistic
 
     const eventService = getters.eventsInterface.getService({ netId, amount, currency })
-
     const graphEvents = await eventService.getEventsFromGraph({ methodName: 'getStatistic' })
 
     let statistic = graphEvents?.events
 
-    if (!statistic || !statistic.length) {
-      const fresh = await eventService.getStatisticsRpc({ eventsCount: 10 })
+    const latestDeposits = []
 
-      statistic = fresh || []
+    if (!statistic || !statistic.length) {
+      statistic = []
     }
 
     const { nextDepositIndex, anonymitySet } = await dispatch('getLastDepositIndex', {
@@ -283,8 +284,6 @@ const actions = {
     })
 
     statistic = statistic.sort((a, b) => a.leafIndex - b.leafIndex)
-
-    const latestDeposits = []
 
     for (const event of statistic.slice(-10)) {
       latestDeposits.unshift({
@@ -358,7 +357,7 @@ const actions = {
     try {
       const module = await download({
         contentType: 'string',
-        name: `events/encrypted_notes_${netId}.json.zip`
+        name: `events/encrypted_notes_${netId}.json.gz`
       })
 
       if (module) {
