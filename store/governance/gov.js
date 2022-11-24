@@ -10,6 +10,8 @@ import networkConfig from '@/networkConfig'
 import GovernanceABI from '@/abis/Governance.abi.json'
 import AggregatorABI from '@/abis/Aggregator.abi.json'
 
+import { httpConfig } from '@/constants'
+
 const { numberToHex, toWei, fromWei, toBN, hexToNumber, hexToNumberString } = require('web3-utils')
 
 const state = () => {
@@ -47,7 +49,9 @@ const getters = {
   },
   getWeb3: (state, getters, rootState) => ({ netId }) => {
     const { url } = rootState.settings[`netId${netId}`].rpc
-    return new Web3(url)
+    const httpProvider = new Web3.providers.HttpProvider(url, httpConfig)
+
+    return new Web3(httpProvider)
   },
   govContract: (state, getters, rootState) => ({ netId }) => {
     const config = getters.getConfig({ netId })

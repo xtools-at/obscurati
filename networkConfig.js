@@ -278,8 +278,8 @@ export default {
     echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
     rpcUrls: {
       Arbitrum: {
-        name: 'Arbitrum Public RPC',
-        url: 'https://arb1.arbitrum.io/rpc'
+        name: '1RPC',
+        url: 'https://1rpc.io/arb'
       }
     },
     tokens: {

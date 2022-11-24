@@ -61,7 +61,6 @@ export const cachedEventsLength = {
 }
 
 export const httpConfig = {
-  withCredentials: false,
   // buffer for tor connections
   timeout: 30000,
   keepAlive: true

@@ -32,6 +32,7 @@ export const getters = {
     const address = config.ovmGasPriceOracleContract
     if (address) {
       const web3 = new Web3(url)
+
       return new web3.eth.Contract(OvmGasPriceOracleABI, address)
     }
 

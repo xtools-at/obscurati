@@ -18,7 +18,7 @@ function buildGroth16() {
 
 function getEns() {
   const { url } = Object.values(networkConfig.netId1.rpcUrls)[0]
-  const provider = new Web3(new Web3.providers.HttpProvider(url))
+  const provider = new Web3(url)
 
   return provider.eth.ens
 }
