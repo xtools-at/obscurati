@@ -76,7 +76,7 @@ export const actions = {
     } catch (e) {
       console.error('fetchGasPrice', e)
     } finally {
-      setTimeout(() => dispatch('fetchGasPrice'), 1000 * pollInterval)
+      setTimeout(() => dispatch('fetchGasPrice'), 2000 * pollInterval)
     }
   },
   setDefault({ commit, rootGetters }) {
