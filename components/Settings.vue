@@ -187,7 +187,9 @@ export default {
     },
     onSave() {
       this.SAVE_RPC({ ...this.rpc, netId: this.netId })
-      this.SAVE_RPC({ ...this.ethRpc, netId: 1 })
+      if (this.netId !== 1) {
+        this.SAVE_RPC({ ...this.ethRpc, netId: 1 })
+      }
       this.$emit('close')
     },
     onCancel() {
