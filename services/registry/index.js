@@ -37,7 +37,7 @@ class RelayerRegister {
           resolve(registeredEventsPart)
         } catch (error) {
           if (shouldRetry) {
-            sleep(1000)
+            sleep(500)
 
             const events = this.fetchEvents({ fromBlock, toBlock })
 
@@ -61,8 +61,7 @@ class RelayerRegister {
     const promises = new Array(chunkCount).fill('').map(
       (_, i) =>
         new Promise((resolve) => {
-          sleep(300)
-
+          sleep(20 * i)
           const batch = this.fetchEvents(
             {
               fromBlock: i * blockDenom + fromBlock,

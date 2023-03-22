@@ -280,8 +280,8 @@ class EventService {
       } catch (e) {
         if (shouldRetry) {
           i = i + 1
-          // maximum 10 second buffer for rate-limiting
-          await sleep(2000 * i)
+          // maximum 5 second buffer for rate-limiting
+          await sleep(1000 * i)
 
           events = await this.getEventsPartFromRpc(
             {
@@ -317,6 +317,7 @@ class EventService {
       (e, i) =>
         new Promise(async (resolve) => {
           try {
+            sleep(20 * i)
             const { events } = await this.getEventsPartFromRpc({ ...e }, true)
             resolve(events)
           } catch (e) {
@@ -369,7 +370,6 @@ class EventService {
             }
           }
           await this.updateEventProgress(progressIndex / batchCount, type)
-          await sleep(200)
         }
         events = flattenNArray(events)
 
