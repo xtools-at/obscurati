@@ -688,6 +688,13 @@ const actions = {
           }
         }
 
+        if (text.includes(`'`)) {
+          text = text.replaceAll(`'`, `"`)
+        }
+        if (text.includes(`" "`)) {
+          text = text.replace(`" "`, `", "`)
+        }
+
         let title, description, rest
         try {
           ;({ title, description } = JSON.parse(text))
