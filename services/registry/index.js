@@ -10,7 +10,7 @@ import { sleep, flattenNArray } from '@/utils'
 import AggregatorABI from '@/abis/Aggregator.abi.json'
 import RelayerRegistryABI from '@/abis/RelayerRegistry.abi.json'
 
-const MIN_STAKE_BALANCE = '0x22B1C8C1227A00000' // 40 TORN
+const MIN_STAKE_BALANCE = '0X1B1AE4D6E2EF500000' // 500 TORN
 
 const subdomains = Object.values(networkConfig).map(({ ensSubdomainKey }) => ensSubdomainKey)
 
