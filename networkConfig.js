@@ -139,9 +139,13 @@ export default {
         name: '1RPC',
         url: 'https://1rpc.io/bnb'
       },
-      bscRpc: {
-        name: 'BSC RPC',
-        url: 'https://bscrpc.com/'
+      blockPi: {
+        name: 'BlockPi',
+        url: 'https://bsc.blockpi.network/v1/rpc/public'
+      },
+      nodeReal: {
+        name: 'NodeReal',
+        url: 'https://bsc-mainnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3'
       }
     },
     tokens: {
@@ -188,11 +192,11 @@ export default {
     rpcUrls: {
       polygonRpc: {
         name: 'Polygon RPC',
-        url: 'https://polygon-rpc.com/'
+        url: 'https://polygon-rpc.com'
       },
       oneRpc: {
         name: '1RPC',
-        url: 'https://1rpc.io/matic/'
+        url: 'https://1rpc.io/matic'
       }
     },
     tokens: {
@@ -238,13 +242,17 @@ export default {
     echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
     ovmGasPriceOracleContract: '0x420000000000000000000000000000000000000F',
     rpcUrls: {
+      blockPi: {
+        name: 'BlockPi',
+        url: 'https://optimism.blockpi.network/v1/rpc/public'
+      },
       oneRpc: {
         name: '1RPC',
-        url: 'https://1rpc.io/op/'
+        url: 'https://1rpc.io/op'
       },
       Optimism: {
         name: 'Optimism',
-        url: 'https://mainnet.optimism.io/'
+        url: 'https://mainnet.optimism.io'
       }
     },
     tokens: {
@@ -289,17 +297,13 @@ export default {
     multicall: '0x842eC2c7D803033Edf55E478F461FC547Bc54EB2',
     echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
     rpcUrls: {
+      blockPi: {
+        name: 'BlockPi',
+        url: 'https://arbitrum.blockpi.network/v1/rpc/public'
+      },
       Arbitrum: {
         name: 'Arbitrum RPC',
-        url: 'https://arb1.arbitrum.io/rpc/'
-      },
-      publicRpc: {
-        name: 'Arbitrum Public RPC',
-        url: 'https://arbitrum.public-rpc.com/'
-      },
-      oneRpc: {
-        name: '1RPC',
-        url: 'https://1rpc.io/arb/'
+        url: 'https://arb1.arbitrum.io/rpc'
       }
     },
     tokens: {
@@ -346,7 +350,11 @@ export default {
     rpcUrls: {
       communityResolver: {
         name: 'Community RPC Resolver',
-        url: 'https://development.tornadocash.community/rpc/v1/'
+        url: 'https://development.tornadocash.community/rpc/v1'
+      },
+      blockPi: {
+        name: 'BlockPi',
+        url: 'https://gnosis.blockpi.network/v1/rpc/public'
       }
     },
     tokens: {
@@ -393,11 +401,15 @@ export default {
     rpcUrls: {
       publicRpc1: {
         name: 'Avalanche RPC',
-        url: 'https://api.avax.network/ext/bc/C/rpc/'
+        url: 'https://api.avax.network/ext/bc/C/rpc'
+      },
+      blockPi: {
+        name: 'BlockPi',
+        url: 'https://avalanche.blockpi.network/v1/rpc/public'
       },
       publicRpc2: {
         name: 'Avalanche Public PRC',
-        url: 'https://avalanche-evm.publicnode.com/'
+        url: 'https://avalanche-evm.publicnode.com'
       },
       oneRpc: {
         name: '1RPC',
