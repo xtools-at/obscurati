@@ -28,53 +28,83 @@ class RelayerRegister {
   fetchEvents = ({ fromBlock, toBlock }, shouldRetry = false) => {
     return new Promise((resolve, reject) => {
       if (fromBlock <= toBlock) {
-        try {
-          const registeredEventsPart = this.relayerRegistry.getPastEvents('RelayerRegistered', {
-            fromBlock,
-            toBlock
+        this.relayerRegistry
+          .getPastEvents('RelayerRegistered', { fromBlock, toBlock })
+          .then((events) => resolve(events))
+          .catch((_) => {
+            if (shouldRetry) {
+              sleep(500).then(() =>
+                this.fetchEvents({ fromBlock, toBlock })
+                  .then((events) => resolve(events))
+                  .catch((_) => resolve(undefined))
+              )
+            } else {
+              resolve(undefined)
+            }
           })
-
-          resolve(registeredEventsPart)
-        } catch (error) {
-          if (shouldRetry) {
-            sleep(500)
-
-            const events = this.fetchEvents({ fromBlock, toBlock })
-
-            resolve(events)
-          } else {
-            reject(new Error(error))
-          }
-        }
       } else {
-        resolve([])
+        resolve(undefined)
       }
     })
   }
 
   batchFetchEvents = async ({ fromBlock, toBlock }) => {
+    const batchSize = 10
     const blockRange = 10000
     const blockDifference = toBlock - fromBlock
     const chunkCount = Math.ceil(blockDifference / blockRange)
     const blockDenom = Math.ceil(blockDifference / chunkCount)
+    const chunkSize = Math.ceil(chunkCount / batchSize)
 
-    const promises = new Array(chunkCount).fill('').map(
-      (_, i) =>
-        new Promise((resolve) => {
-          sleep(20 * i)
-          const batch = this.fetchEvents(
-            {
-              fromBlock: i * blockDenom + fromBlock,
-              toBlock: (i + 1) * blockDenom + fromBlock
-            },
-            true
+    let failed = []
+    let events = []
+    let lastBlock = fromBlock
+
+    for (let batchIndex = 0; batchIndex < chunkSize; batchIndex++) {
+      const params = new Array(batchSize).fill('').map((_, i) => {
+        const toBlock = (i + 1) * blockDenom + lastBlock
+        const fromBlock = toBlock - blockDenom
+        return { fromBlock, toBlock }
+      })
+      const promises = new Array(batchSize).fill('').map(
+        (_, i) =>
+          new Promise((resolve) =>
+            sleep(i * 20).then(() => {
+              this.fetchEvents(params[i], true).then((batch) => {
+                if (!batch) {
+                  resolve([{ isFailedBatch: true, fromBlock, toBlock }])
+                } else {
+                  resolve(batch)
+                }
+              })
+            })
           )
-          resolve(batch)
+      )
+      const requests = flattenNArray(await Promise.all(promises))
+      const failedIndexes = requests
+        .filter((e) => e.isFailedBatch)
+        .map((e) => {
+          const reqIndex = requests.indexOf(e)
+          return params[reqIndex]
         })
-    )
 
-    const batchEvents = flattenNArray(await Promise.all(promises))
-    const events = batchEvents.map((e) => ({ ...e.returnValues }))
+      failed = failed.concat(failedIndexes || [])
+      events = events.concat(requests.filter((e) => !e.isFailedBatch))
+      lastBlock = params[batchSize - 1].toBlock
+    }
+
+    if (failed.length !== 0) {
+      const failedReqs = failed.map((e) => this.fetchEvents(e))
+      const failedBatch = flattenNArray(await Promise.all(failedReqs))
+
+      events = events.concat(failedBatch || [])
+    }
+
+    events = events.map((e) => ({ ...e.returnValues }))
+
+    if (events.length === 0) {
+      throw new Error('Failed to fetch registry events')
+    }
 
     return events
   }
@@ -169,6 +199,7 @@ class RelayerRegister {
       for (let x = 0; x < relayerEvents.length; x++) {
         const { ensName, relayerAddress } = relayerEvents[x]
         let ensAddress
+
         if (!isAddress(relayerAddress)) {
           ensAddress = await this.getENSAddress(ensName)
           ensAddress = toChecksumAddress(ensAddress)

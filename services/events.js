@@ -80,7 +80,6 @@ class EventService {
       }
       return a.blockNumber - b.blockNumber
     })
-
     const lastBlock = allEvents[allEvents.length - 1].blockNumber
 
     this.saveEvents({ events: allEvents, lastBlock, type })
@@ -247,65 +246,60 @@ class EventService {
     }
   }
 
-  getPastEvents({ fromBlock, toBlock, type }) {
+  getPastEvents({ fromBlock, toBlock, type }, shouldRetry = false, i = 0) {
     return new Promise((resolve, reject) => {
-      const repsonse = this.contract.getPastEvents(capitalizeFirstLetter(type), {
-        fromBlock,
-        toBlock
-      })
+      this.contract
+        .getPastEvents(capitalizeFirstLetter(type), {
+          fromBlock,
+          toBlock
+        })
+        .then((events) => resolve(events))
+        .catch((err) => {
+          i = i + 1
+          // maximum 5 second buffer for rate-limiting
+          if (shouldRetry) {
+            const isRetry = i !== 5
 
-      if (repsonse) {
-        resolve(repsonse)
-      } else {
-        reject(new Error())
-      }
+            sleep(1000 * i).then(() =>
+              this.getPastEvents({ fromBlock, toBlock, type }, isRetry, i)
+                .then((events) => resolve(events))
+                .catch((_) => resolve(undefined))
+            )
+          } else {
+            reject(new Error(err))
+          }
+        })
     })
   }
 
-  async getEventsPartFromRpc({ fromBlock, toBlock, type }, shouldRetry = false, i = 0) {
+  async getEventsPartFromRpc(parameters, shouldRetry = false) {
     try {
+      const { fromBlock, type } = parameters
       const { currentBlockNumber } = await this.getBlocksDiff({ fromBlock })
 
-      if (fromBlock > currentBlockNumber) {
-        return {
-          events: [],
-          lastBlock: fromBlock
-        }
-      }
+      if (fromBlock < currentBlockNumber) {
+        const eventsPart = await this.getPastEvents(parameters, shouldRetry)
 
-      let events = []
-
-      try {
-        events = await this.getPastEvents({ fromBlock, toBlock, type })
-      } catch (e) {
-        if (shouldRetry) {
-          i = i + 1
-          // maximum 5 second buffer for rate-limiting
-          await sleep(1000 * i)
-
-          events = await this.getEventsPartFromRpc(
-            {
-              fromBlock,
-              toBlock,
-              type
-            },
-            i !== 5,
-            i
-          )
+        if (eventsPart) {
+          if (eventsPart.length > 0) {
+            return {
+              events: formatEvents(eventsPart, type),
+              lastBlock: eventsPart[eventsPart.length - 1].blockNumber
+            }
+          } else {
+            return {
+              events: [],
+              lastBlock: fromBlock
+            }
+          }
         } else {
-          throw new Error(`Failed to fetch block ${toBlock}`)
+          return undefined
         }
-      }
-
-      if (!events?.length) {
+      } else {
         return {
           events: [],
           lastBlock: fromBlock
         }
-      }
-      return {
-        events: formatEvents(events, type),
-        lastBlock: events[events.length - 1].blockNumber
       }
     } catch (err) {
       return undefined
@@ -315,15 +309,17 @@ class EventService {
   createBatchRequest(batchArray) {
     return batchArray.map(
       (e, i) =>
-        new Promise(async (resolve) => {
-          try {
-            sleep(20 * i)
-            const { events } = await this.getEventsPartFromRpc({ ...e }, true)
-            resolve(events)
-          } catch (e) {
-            resolve({ isFailedBatch: true, ...e })
-          }
-        })
+        new Promise((resolve) =>
+          sleep(20 * i).then(() =>
+            this.getEventsPartFromRpc({ ...e }, true).then((batch) => {
+              if (!batch) {
+                resolve([{ isFailedBatch: true, ...e }])
+              } else {
+                resolve(batch.events)
+              }
+            })
+          )
+        )
     )
   }
 
@@ -352,33 +348,35 @@ class EventService {
             return { fromBlock, toBlock, type }
           })
           const batch = await Promise.all(this.createBatchRequest(params))
+          const requests = flattenNArray(batch)
 
+          events = events.concat(requests.filter((e) => !e.isFailedBatch))
+          failed = failed.concat(requests.filter((e) => e.isFailedBatch))
           lastBlock = params[batchSize - 1].toBlock
-          events = events.concat(batch.filter((e) => !e.isFailedBatch))
-          failed = failed.concat(batch.filter((e) => e.isFailedBatch))
 
           const progressIndex = batchIndex - failed.length / batchSize
 
           if (isLastBatch && failed.length !== 0) {
-            const fbatch = await Promise.all(this.createBatchRequest(failed))
-            const isFailedBatch = fbatch.filter((e) => e.isFailedBatch).length !== 0
+            const failedBatch = await Promise.all(this.createBatchRequest(failed))
+            const failedReqs = flattenNArray(failedBatch)
+            const failedRept = failedReqs.filter((e) => e.isFailedBatch)
 
-            if (isFailedBatch) {
-              throw new Error('Failed to batch events')
+            if (failedRept.length === 0) {
+              events = events.concat(failedReqs)
             } else {
-              events = events.concat(fbatch)
+              throw new Error('Failed to batch events')
             }
           }
           await this.updateEventProgress(progressIndex / batchCount, type)
         }
-        events = flattenNArray(events)
 
         return {
           lastBlock: events[events.length - 1].blockNumber,
           events
         }
+      } else {
+        return undefined
       }
-      return undefined
     } catch (err) {
       return undefined
     }
