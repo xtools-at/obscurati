@@ -179,21 +179,35 @@ const actions = {
   ) {
     try {
       const { ethAccount } = rootState.metamask
-      const { lockedBalance, constants } = state
+      const { lockedBalance, constants, delegators } = state
       const netId = rootGetters['metamask/netId']
 
       const proposalThreshold = toBN(constants.PROPOSAL_THRESHOLD)
-      const proposeIndependently = lockedBalance.gte(proposalThreshold)
+      const proposeIndependently = toBN(lockedBalance).gte(proposalThreshold)
 
       const govInstance = getters.govContract({ netId })
       const json = JSON.stringify({ title, description })
-      const fSelector = !proposeIndependently ? 'proposeByDelegate' : 'propose'
-      const data = await govInstance.methods[fSelector](proposalAddress, json).encodeABI()
+      const delegatorAddress = delegators[delegators.length - 1]
 
-      const gas = await govInstance.methods[fSelector](proposalAddress, json).estimateGas({
-        from: ethAccount,
-        value: 0
-      })
+      let data, gas
+
+      if (proposeIndependently) {
+        data = await govInstance.methods.propose(proposalAddress, json).encodeABI()
+        gas = await govInstance.methods.propose(proposalAddress, json).estimateGas({
+          from: ethAccount,
+          value: 0
+        })
+      } else {
+        data = await govInstance.methods
+          .proposeByDelegate(delegatorAddress, proposalAddress, json)
+          .encodeABI()
+        gas = await govInstance.methods
+          .proposeByDelegate(delegatorAddress, proposalAddress, json)
+          .estimateGas({
+            from: ethAccount,
+            value: 0
+          })
+      }
 
       const callParams = {
         method: 'eth_sendTransaction',
