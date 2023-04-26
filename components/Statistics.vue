@@ -65,6 +65,9 @@
             </div>
           </div>
         </template>
+        <div class="notice is-warning">
+          <div class="notice__p">{{ $t('withdrawWalletWarningGeneral') }}</div>
+        </div>
       </div>
     </div>
   </div>

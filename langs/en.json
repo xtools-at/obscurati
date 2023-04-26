@@ -88,6 +88,7 @@
   "save": "Save",
   "reset": "Reset",
   "withdrawWalletWarning": "Make sure that {currency} used to pay for the gas fee is not linkable to ANY of your addresses. Otherwise, the anonymity of the withdrawal will be compromised. We recommend using a Relayer instead.",
+  "withdrawWalletWarningGeneral": "obscurati does NOT support relayers yet. When withdrawing funds, make sure that the currency used to pay for the gas fee is not linkable to ANY of your addresses. Otherwise, the anonymity of the withdrawal will be compromised.",
   "withdrawalConfirmation": "Withdrawal Confirmation",
   "confirm": "Confirm",
   "yourZkSnarkProofHasBeenSuccesfullyGenerated": "Your zk-Snark proof has been successfully generated! Please click Confirm to initiate the withdrawal",
