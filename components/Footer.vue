@@ -17,8 +17,17 @@
               >
             </div>
             <div class="level-subitem">
-              Tornado.cash version:
-              <span class="footer-version__value">{{ commit }}</span>
+              <div class="footer-address__name">
+                obscurati version:
+              </div>
+              <a
+                class="footer-address__value"
+                target="_blank"
+                :href="`https://github.com/xtools-at/obscurati/tree/${commit}/docs`"
+                rel="noopener noreferrer"
+              >
+                {{ commit }}
+              </a>
             </div>
           </div>
         </div>

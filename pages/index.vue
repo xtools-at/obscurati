@@ -24,7 +24,7 @@
     >
       <i18n path="trustBanner.trustLess">
         <template v-slot:link>
-          <a href="https://tornado.cash/">{{ $t('trustBanner.link') }}</a>
+          <a href="https://xtools-at.github.io/obscurati/">{{ $t('trustBanner.link') }}</a>
         </template>
       </i18n>
     </b-notification>
