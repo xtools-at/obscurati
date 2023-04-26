@@ -44,7 +44,7 @@ export default {
     fallback: true
   },
   head: {
-    title: 'Tornado.cash',
+    title: 'Obscurati',
     meta: [
       { charset: 'utf-8' },
       {
@@ -64,22 +64,22 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'Non-custodial Ethereum Privacy solution.'
+        content: 'Non-custodial Blockchain Privacy solution.'
       },
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'Tornado.Cash'
+        content: 'Obscurati'
       },
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Non-custodial, trustless, serverless, private transactions on Ethereum network'
+        content: 'Non-custodial, trustless, serverless, private transactions on EVM networks'
       },
       {
         hid: 'og:url',
         property: 'og:url',
-        content: 'https://tornado.cash'
+        content: 'https://xtools-at.github.io/obscurati/'
       },
       {
         hid: 'og:type',
@@ -89,19 +89,21 @@ export default {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://tornado.cash/tw.png'
+        content: 'https://xtools-at.github.io/obscurati/tw.png'
       },
       {
         hid: 'description',
         name: 'description',
-        content: 'Non-custodial, trustless, serverless, private transactions on Ethereum network'
-      },
+        content: 'Non-custodial, trustless, serverless, private transactions on EVM networks'
+      }
+      /*,
       {
         hid: 'keywords',
         name: 'keywords',
         content:
           'Tornado, Ethereum, ERC20, dapp, smart contract, decentralized, metamask, zksnark, zero knowledge'
       }
+      */
     ],
     link: [
       { rel: 'manifest', href: '/manifest.json' },
@@ -164,7 +166,8 @@ export default {
   ],
   router: {
     linkActiveClass: '',
-    linkExactActiveClass: 'is-active'
+    linkExactActiveClass: 'is-active',
+    base: '/obscurati/'
   },
   hooks: hooks(this),
   /*
