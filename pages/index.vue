@@ -29,6 +29,7 @@
       </i18n>
     </b-notification>
 
+    <!--
     <b-notification
       :active="isActiveNotification.first"
       class="main-notification"
@@ -82,6 +83,7 @@
         </template>
       </i18n>
     </b-notification>
+    -->
 
     <div class="columns">
       <div class="column is-half">
@@ -126,7 +128,7 @@ export default {
   watch: {
     netId() {
       if (this.activeTab === 1) {
-        this.$store.dispatch('relayer/pickRandomRelayer', { type: 'tornado' })
+        // this.$store.dispatch('relayer/pickRandomRelayer', { type: 'tornado' })
       }
     }
   },
@@ -147,7 +149,7 @@ export default {
     },
     async tabChanged(tabIndex) {
       if (tabIndex === 1) {
-        this.$store.dispatch('relayer/pickRandomRelayer', { type: 'tornado' })
+        // this.$store.dispatch('relayer/pickRandomRelayer', { type: 'tornado' })
 
         if (typeof this.getKeys === 'function' && !this.isActive) {
           this.isActive = true

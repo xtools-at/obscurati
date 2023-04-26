@@ -24,7 +24,7 @@
           </i18n>
           <b-skeleton size="is-large" :active="!anonimitySet" width="200"></b-skeleton>
         </div>
-        <template v-if="anonimitySet != 0">
+        <template v-if="anonimitySet != 0 && latestDeposits && latestDeposits.length">
           <div class="label">{{ $t('latestDeposits') }}</div>
           <div v-if="latestDeposits && latestDeposits.length" class="columns is-small is-multiline">
             <div class="column is-half-small">

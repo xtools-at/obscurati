@@ -26,6 +26,7 @@
           <div class="level-item is-column">
             <div class="level-subitem">
               <div class="buttons">
+                <!--
                 <b-button
                   tag="a"
                   type="is-icon"
@@ -37,15 +38,16 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://development.tornadocash.community/tornadocash/classic-ui"
+                  href="https://github.com/xtools_at/obscurati"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="git"
                 ></b-button>
+                -->
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://github.com/tornadocash"
+                  href="https://github.com/xtools_at/obscurati"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="github"

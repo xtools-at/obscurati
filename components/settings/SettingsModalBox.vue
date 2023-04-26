@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      withdrawType: 'relayer'
+      withdrawType: 'wallet'
     }
   },
   computed: {
@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapMutations('application', ['SET_WITHDRAW_TYPE']),
     reset() {
-      this.withdrawType = 'relayer'
+      this.withdrawType = 'wallet'
       this.$root.$emit('resetSettings')
     },
     save() {

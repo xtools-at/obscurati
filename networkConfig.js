@@ -1,4 +1,66 @@
 export default {
+  netId133: {
+    rpcCallRetryAttempt: 15,
+    gasPrices: {
+      instant: 35,
+      fast: 32,
+      standard: 28,
+      low: 26
+    },
+    nativeCurrency: 'xp',
+    currencyName: 'XP',
+    explorerUrl: {
+      // TODO:
+      tx: 'https://example.com/tx/',
+      address: 'https://example.com/address/',
+      block: 'https://example.com/block/'
+    },
+    merkleTreeHeight: 20,
+    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
+    networkName: 'B Devnet',
+    deployedBlock: 33,
+    multicall: '0x3F50A015D0483e86403c6AF86c8d85A875D4E3e9',
+    echoContractAccount: '0x999f90f25a2922ae1b21A06066F7EDEbedad42a9',
+    rpcUrls: {
+      publicRpc: {
+        name: 'Devnet RPC',
+        url: 'https://rpc.connectednft.art:9650/ext/bc/2NXVLcGbemMjwyexwigxCoqn7UJ6DdeJdWNPxcWX4Y2eDem1aW/rpc'
+      }
+    },
+    tokens: {
+      xp: {
+        instanceAddress: {
+          '10': '0x76BF5E7d2Bcb06b1444C0a2742780051D8D0E304',
+          '100': '',
+          '1000': '',
+          '10000': ''
+        },
+        symbol: 'XP',
+        decimals: 18
+      }
+      /*,
+      usdct: {
+        instanceAddress: {
+          '10': '0x2df1051b1D24EFEF51e31849866FC787C75919DF',
+          '100': '',
+          '1000': '',
+          '10000': ''
+        },
+        symbol: 'USDCT',
+        decimals: 18,
+        tokenAddress: '0x3438271Fd753b8b217447Bf7B18249347B282CCD',
+        gasLimit: '80000'
+      }
+      */
+    },
+    ensSubdomainKey: 'devnet-tornado', // TODO
+    pollInterval: 10,
+    constants: {
+      NOTE_ACCOUNT_BLOCK: 33,
+      ENCRYPTED_NOTES_BLOCK: 33
+    },
+    'tornado-proxy-light.contract.tornadocash.eth': '0xe4c10B25979773090f6d86A0A6108c402a3f7E27'
+  },
   netId1: {
     rpcCallRetryAttempt: 15,
     gasPrices: {
@@ -112,439 +174,5 @@ export default {
     'governance.contract.tornadocash.eth': '0x5efda50f22d34F262c29268506C5Fa42cB56A1Ce',
     'tornado-router.contract.tornadocash.eth': '0xd90e2f925DA726b50C4Ed8D0Fb90Ad053324F31b',
     'staking-rewards.contract.tornadocash.eth': '0x2FC93484614a34f26F7970CBB94615bA109BB4bf'
-  },
-  netId56: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 5,
-      fast: 5,
-      standard: 5,
-      low: 5
-    },
-    nativeCurrency: 'bnb',
-    currencyName: 'BNB',
-    explorerUrl: {
-      tx: 'https://bscscan.com/tx/',
-      address: 'https://bscscan.com/address/',
-      block: 'https://bscscan.com/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Binance Smart Chain',
-    deployedBlock: 8158799,
-    multicall: '0x41263cba59eb80dc200f3e2544eda4ed6a90e76c',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    rpcUrls: {
-      oneRPC: {
-        name: '1RPC',
-        url: 'https://1rpc.io/bnb'
-      },
-      blockPi: {
-        name: 'BlockPi',
-        url: 'https://bsc.blockpi.network/v1/rpc/public'
-      },
-      nodeReal: {
-        name: 'NodeReal',
-        url: 'https://bsc-mainnet.nodereal.io/v1/64a9df0874fb4a93b9d0a3849de012d3'
-      }
-    },
-    tokens: {
-      bnb: {
-        instanceAddress: {
-          '0.1': '0x84443CFd09A48AF6eF360C6976C5392aC5023a1F',
-          '1': '0xd47438C816c9E7f2E2888E060936a499Af9582b3',
-          '10': '0x330bdFADE01eE9bF63C209Ee33102DD334618e0a',
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD'
-        },
-        symbol: 'BNB',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'bsc-tornado',
-    pollInterval: 10,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 8159269,
-      ENCRYPTED_NOTES_BLOCK: 8159269
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId137: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 100,
-      fast: 75,
-      standard: 50,
-      low: 30
-    },
-    nativeCurrency: 'matic',
-    currencyName: 'MATIC',
-    explorerUrl: {
-      tx: 'https://polygonscan.com/tx/',
-      address: 'https://polygonscan.com/address/',
-      block: 'https://polygonscan.com/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Polygon (Matic) Network',
-    deployedBlock: 16257962,
-    multicall: '0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    rpcUrls: {
-      polygonRpc: {
-        name: 'Polygon RPC',
-        url: 'https://polygon-rpc.com'
-      },
-      oneRpc: {
-        name: '1RPC',
-        url: 'https://1rpc.io/matic'
-      }
-    },
-    tokens: {
-      matic: {
-        instanceAddress: {
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD',
-          '1000': '0xdf231d99Ff8b6c6CBF4E9B9a945CBAcEF9339178',
-          '10000': '0xaf4c0B70B2Ea9FB7487C7CbB37aDa259579fe040',
-          '100000': '0xa5C2254e4253490C54cef0a4347fddb8f75A4998'
-        },
-        symbol: 'MATIC',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'polygon-tornado',
-    pollInterval: 10,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 16257996,
-      ENCRYPTED_NOTES_BLOCK: 16257996
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId10: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 0.001,
-      fast: 0.001,
-      standard: 0.001,
-      low: 0.001
-    },
-    nativeCurrency: 'eth',
-    currencyName: 'ETH',
-    explorerUrl: {
-      tx: 'https://optimistic.etherscan.io/tx/',
-      address: 'https://optimistic.etherscan.io/address/',
-      block: 'https://optimistic.etherscan.io/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Optimism',
-    deployedBlock: 2243689,
-    multicall: '0x35A6Cdb2C9AD4a45112df4a04147EB07dFA01aB7',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    ovmGasPriceOracleContract: '0x420000000000000000000000000000000000000F',
-    rpcUrls: {
-      blockPi: {
-        name: 'BlockPi',
-        url: 'https://optimism.blockpi.network/v1/rpc/public'
-      },
-      oneRpc: {
-        name: '1RPC',
-        url: 'https://1rpc.io/op'
-      },
-      Optimism: {
-        name: 'Optimism',
-        url: 'https://mainnet.optimism.io'
-      }
-    },
-    tokens: {
-      eth: {
-        instanceAddress: {
-          '0.1': '0x84443CFd09A48AF6eF360C6976C5392aC5023a1F',
-          '1': '0xd47438C816c9E7f2E2888E060936a499Af9582b3',
-          '10': '0x330bdFADE01eE9bF63C209Ee33102DD334618e0a',
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD'
-        },
-        symbol: 'ETH',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'optimism-tornado',
-    pollInterval: 15,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 2243694,
-      ENCRYPTED_NOTES_BLOCK: 2243694
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId42161: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 4,
-      fast: 3,
-      standard: 2.52,
-      low: 2.29
-    },
-    nativeCurrency: 'eth',
-    currencyName: 'ETH',
-    explorerUrl: {
-      tx: 'https://arbiscan.io/tx/',
-      address: 'https://arbiscan.io/address/',
-      block: 'https://arbiscan.io/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Arbitrum One',
-    deployedBlock: 3430648,
-    multicall: '0x842eC2c7D803033Edf55E478F461FC547Bc54EB2',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    rpcUrls: {
-      blockPi: {
-        name: 'BlockPi',
-        url: 'https://arbitrum.blockpi.network/v1/rpc/public'
-      },
-      Arbitrum: {
-        name: 'Arbitrum RPC',
-        url: 'https://arb1.arbitrum.io/rpc'
-      }
-    },
-    tokens: {
-      eth: {
-        instanceAddress: {
-          '0.1': '0x84443CFd09A48AF6eF360C6976C5392aC5023a1F',
-          '1': '0xd47438C816c9E7f2E2888E060936a499Af9582b3',
-          '10': '0x330bdFADE01eE9bF63C209Ee33102DD334618e0a',
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD'
-        },
-        symbol: 'ETH',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'arbitrum-tornado',
-    pollInterval: 15,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 3430605,
-      ENCRYPTED_NOTES_BLOCK: 3430605
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId100: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 6,
-      fast: 5,
-      standard: 4,
-      low: 1
-    },
-    nativeCurrency: 'xdai',
-    currencyName: 'xDAI',
-    explorerUrl: {
-      tx: 'https://blockscout.com/xdai/mainnet/tx/',
-      address: 'https://blockscout.com/xdai/mainnet/address/',
-      block: 'https://blockscout.com/xdai/mainnet/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Gnosis Chain',
-    deployedBlock: 17754561,
-    multicall: '0xb5b692a88bdfc81ca69dcb1d924f59f0413a602a',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    rpcUrls: {
-      communityResolver: {
-        name: 'Community RPC Resolver',
-        url: 'https://development.tornadocash.community/rpc/v1'
-      },
-      blockPi: {
-        name: 'BlockPi',
-        url: 'https://gnosis.blockpi.network/v1/rpc/public'
-      }
-    },
-    tokens: {
-      xdai: {
-        instanceAddress: {
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD',
-          '1000': '0xdf231d99Ff8b6c6CBF4E9B9a945CBAcEF9339178',
-          '10000': '0xaf4c0B70B2Ea9FB7487C7CbB37aDa259579fe040',
-          '100000': '0xa5C2254e4253490C54cef0a4347fddb8f75A4998'
-        },
-        symbol: 'xDAI',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'gnosis-tornado',
-    pollInterval: 15,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 17754564,
-      ENCRYPTED_NOTES_BLOCK: 17754564
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId43114: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 225,
-      fast: 35,
-      standard: 25,
-      low: 25
-    },
-    nativeCurrency: 'avax',
-    currencyName: 'AVAX',
-    explorerUrl: {
-      tx: 'https://snowtrace.io/tx/',
-      address: 'https://snowtrace.io/address/',
-      block: 'https://snowtrace.io/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Avalanche Mainnet',
-    deployedBlock: 4429818,
-    multicall: '0xe86e3989c74293Acc962156cd3F525c07b6a1B6e',
-    echoContractAccount: '0xa75BF2815618872f155b7C4B0C81bF990f5245E4',
-    rpcUrls: {
-      publicRpc1: {
-        name: 'Avalanche RPC',
-        url: 'https://api.avax.network/ext/bc/C/rpc'
-      },
-      blockPi: {
-        name: 'BlockPi',
-        url: 'https://avalanche.blockpi.network/v1/rpc/public'
-      },
-      publicRpc2: {
-        name: 'Avalanche Public PRC',
-        url: 'https://avalanche-evm.publicnode.com'
-      },
-      oneRpc: {
-        name: '1RPC',
-        ulr: 'https://1rpc.io/avax/'
-      }
-    },
-    tokens: {
-      avax: {
-        instanceAddress: {
-          '10': '0x330bdFADE01eE9bF63C209Ee33102DD334618e0a',
-          '100': '0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD',
-          '500': '0xaf8d1839c3c67cf571aa74B5c12398d4901147B3'
-        },
-        symbol: 'AVAX',
-        decimals: 18
-      }
-    },
-    ensSubdomainKey: 'avalanche-tornado',
-    pollInterval: 10,
-    constants: {
-      NOTE_ACCOUNT_BLOCK: 4429813,
-      ENCRYPTED_NOTES_BLOCK: 4429813
-    },
-    'tornado-proxy-light.contract.tornadocash.eth': '0x0D5550d52428E7e3175bfc9550207e4ad3859b17'
-  },
-  netId5: {
-    rpcCallRetryAttempt: 15,
-    gasPrices: {
-      instant: 80,
-      fast: 50,
-      standard: 25,
-      low: 8
-    },
-    nativeCurrency: 'eth',
-    currencyName: 'gETH',
-    explorerUrl: {
-      tx: 'https://goerli.etherscan.io/tx/',
-      address: 'https://goerli.etherscan.io/address/',
-      block: 'https://goerli.etherscan.io/block/'
-    },
-    merkleTreeHeight: 20,
-    emptyElement: '21663839004416932945382355908790599225266501822907911457504978515578255421292',
-    networkName: 'Ethereum Goerli',
-    deployedBlock: 3781595,
-    multicall: '0x77dca2c955b15e9de4dbbcf1246b4b85b651e50e',
-    echoContractAccount: '0x37e6859804b6499d1e4a86d70a5fdd5de6a0ac65',
-    aggregatorContract: '0x8cb1436F64a3c33aD17bb42F94e255c4c0E871b2',
-    rpcUrls: {
-      Infura: {
-        name: 'Infura',
-        url: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
-      }
-    },
-    tokens: {
-      eth: {
-        instanceAddress: {
-          '0.1': '0x6Bf694a291DF3FeC1f7e69701E3ab6c592435Ae7',
-          '1': '0x3aac1cC67c2ec5Db4eA850957b967Ba153aD6279',
-          '10': '0x723B78e67497E85279CB204544566F4dC5d2acA0',
-          '100': '0x0E3A09dDA6B20aFbB34aC7cD4A6881493f3E7bf7'
-        },
-        symbol: 'ETH',
-        decimals: 18
-      },
-      dai: {
-        instanceAddress: {
-          '100': '0x76D85B4C0Fc497EeCc38902397aC608000A06607',
-          '1000': '0xCC84179FFD19A1627E79F8648d09e095252Bc418',
-          '10000': '0xD5d6f8D9e784d0e26222ad3834500801a68D027D',
-          '100000': '0x407CcEeaA7c95d2FE2250Bf9F2c105aA7AAFB512'
-        },
-        tokenAddress: '0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60',
-        symbol: 'DAI',
-        decimals: 18,
-        gasLimit: '55000'
-      },
-      cdai: {
-        instanceAddress: {
-          '5000': '0x833481186f16Cece3f1Eeea1a694c42034c3a0dB',
-          '50000': '0xd8D7DE3349ccaA0Fde6298fe6D7b7d0d34586193',
-          '500000': '0x8281Aa6795aDE17C8973e1aedcA380258Bc124F9',
-          '5000000': '0x57b2B8c82F065de8Ef5573f9730fC1449B403C9f'
-        },
-        tokenAddress: '0x822397d9a55d0fefd20F5c4bCaB33C5F65bd28Eb',
-        symbol: 'cDAI',
-        decimals: 8,
-        gasLimit: '425000'
-      },
-      usdc: {
-        instanceAddress: {
-          '100': '0x05E0b5B40B7b66098C2161A5EE11C5740A3A7C45',
-          '1000': '0x23173fE8b96A4Ad8d2E17fB83EA5dcccdCa1Ae52',
-          '10000': '',
-          '100000': ''
-        },
-        tokenAddress: '0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C',
-        symbol: 'USDC',
-        decimals: 6,
-        gasLimit: '80000'
-      },
-      usdt: {
-        instanceAddress: {
-          '100': '0x538Ab61E8A9fc1b2f93b3dd9011d662d89bE6FE6',
-          '1000': '0x94Be88213a387E992Dd87DE56950a9aef34b9448',
-          '10000': '',
-          '100000': ''
-        },
-        tokenAddress: '0xb7FC2023D96AEa94Ba0254AA5Aeb93141e4aad66',
-        symbol: 'USDT',
-        decimals: 6,
-        gasLimit: '100000'
-      },
-      wbtc: {
-        instanceAddress: {
-          '0.1': '0x242654336ca2205714071898f67E254EB49ACdCe',
-          '1': '0x776198CCF446DFa168347089d7338879273172cF',
-          '10': '0xeDC5d01286f99A066559F60a585406f3878a033e',
-          '100': ''
-        },
-        tokenAddress: '0xC04B0d3107736C32e19F1c62b2aF67BE61d63a05',
-        symbol: 'WBTC',
-        decimals: 8,
-        gasLimit: '85000'
-      }
-    },
-    ensSubdomainKey: 'goerli-tornado',
-    pollInterval: 15,
-    constants: {
-      GOVERNANCE_BLOCK: 3945171,
-      NOTE_ACCOUNT_BLOCK: 4131375,
-      ENCRYPTED_NOTES_BLOCK: 4131375,
-      MINING_BLOCK_TIME: 15
-    },
-    'torn.contract.tornadocash.eth': '0x77777FeDdddFfC19Ff86DB637967013e6C6A116C',
-    'governance.contract.tornadocash.eth': '0x5efda50f22d34F262c29268506C5Fa42cB56A1Ce',
-    'tornado-proxy.contract.tornadocash.eth': '0x454d870a72e29d5e5697f635128d18077bd04c60'
   }
 }

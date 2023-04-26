@@ -32,6 +32,7 @@
             <LinkIcon />
           </b-tooltip>
         </a>
+        <!--
         <button
           v-show="shouldSettingsShow"
           class="button is-icon"
@@ -42,6 +43,7 @@
             <SettingsIcon />
           </b-tooltip>
         </button>
+        -->
       </div>
 
       <b-input
@@ -149,7 +151,8 @@ import { getTornadoKeys } from '@/store/snark'
 import { parseNote } from '@/utils'
 import { DONATIONS_ADDRESS } from '@/constants'
 
-import { LinkIcon, SettingsIcon } from '@/components/icons'
+// eslint-disable-next-line standard/object-curly-even-spacing
+import { LinkIcon /*, SettingsIcon */ } from '@/components/icons'
 import RelayerTotal from '@/components/withdraw/RelayerTotal'
 import WithdrawTotal from '@/components/withdraw/WithdrawTotal'
 import WithdrawModalBox from '@/components/withdraw/WithdrawModalBox'
@@ -161,7 +164,7 @@ export default {
   components: {
     LinkIcon,
     RelayerTotal,
-    SettingsIcon,
+    // SettingsIcon,
     WithdrawTotal
   },
   props: {

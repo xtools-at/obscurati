@@ -66,6 +66,7 @@ export default {
     this.checkRecoveryKey()
     this.newNotify()
     this.$store.dispatch('gasPrices/setDefault')
+    this.networkChangeHandler({ netId: 133 })
   },
   mounted() {
     this.$preventMultitabs()
@@ -114,6 +115,7 @@ export default {
   },
   methods: {
     ...mapActions('settings', ['checkCurrentRpc', 'preselectRpc']),
+    ...mapActions('metamask', ['networkChangeHandler']),
     checkRecoveryKey() {
       this.$store.dispatch('encryptedNote/checkRecoveryKey', {}, { root: true })
     },
@@ -126,6 +128,7 @@ export default {
       })
     },
     newNotify() {
+      /*
       const hasNotify = window.localStorage.getItem('hasNotify')
 
       if (!hasNotify) {
@@ -143,6 +146,7 @@ export default {
         )
         window.localStorage.setItem('hasNotify', true)
       }
+      */
     },
     handleOpenModal() {
       const recoveryKey = this.$sessionStorage.getItem(this.accounts.encrypt)

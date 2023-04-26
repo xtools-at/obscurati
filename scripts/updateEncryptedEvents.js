@@ -8,7 +8,7 @@ import ABI from '../abis/TornadoProxy.abi.json'
 import { getPastEvents, loadCachedEvents } from './helpers'
 
 const EVENTS_PATH = './static/events/'
-const enabledChains = ['1', '5', '56', '100', '137']
+const enabledChains = ['1', '5', '56', '100', '137', '133']
 
 async function saveEncryptedNote(netId) {
   const {

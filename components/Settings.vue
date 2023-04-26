@@ -153,7 +153,7 @@ export default {
     }
   },
   created() {
-    this.ethRpc = this.getRpc(1)
+    this.ethRpc = this.getRpc(133)
     this.rpc = this.getRpc(this.netId)
     this.selectedRpc = this.rpc.name
     this.selectedEthRpc = this.ethRpc.name

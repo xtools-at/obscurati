@@ -28,6 +28,7 @@ const CHAIN_GRAPH_URLS = {
   137: 'https://api.thegraph.com/subgraphs/name/tornadocash/matic-tornado-subgraph',
   42161: 'https://api.thegraph.com/subgraphs/name/tornadocash/arbitrum-tornado-subgraph',
   43114: 'https://api.thegraph.com/subgraphs/name/tornadocash/avalanche-tornado-subgraph'
+  // 133: 'https://api.thegraph.com/foo' // TODO
 }
 
 const defaultOptions = {
