@@ -15,8 +15,8 @@
       &:after {
         content: '';
         display: block;
-        height: 60px;
-        width: 60px;
+        height: 40px;
+        width: 40px;
         background-image: url('../img/logo.svg');
         animation: spinAroundReverse 2000ms infinite linear;
       }
