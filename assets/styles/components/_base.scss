@@ -243,7 +243,7 @@ $icon-dimensions-large: 3.429rem;
 }
 
 .column {
-  @media screen and (min-width: 576px) and (max-width: $tablet - 1px) {
+  @media screen and (min-width: 576px) and (max-width: ($tablet - 1px)) {
     &.is-half-small-only {
       flex: none;
       width: 50%;
