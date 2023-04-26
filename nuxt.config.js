@@ -106,9 +106,9 @@ export default {
       */
     ],
     link: [
-      { rel: 'manifest', href: '/manifest.json' },
-      { rel: 'shortcut icon', type: 'image/x-icon', href: '/favicon/favicon.ico' },
-      { rel: 'apple-touch-icon', href: '/favicon/apple-touch-icon.png' }
+      { rel: 'manifest', href: '/obscurati/manifest.json' },
+      { rel: 'shortcut icon', type: 'image/x-icon', href: '/obscurati/favicon/favicon.ico' },
+      { rel: 'apple-touch-icon', href: '/obscurati/favicon/apple-touch-icon.png' }
     ]
   },
   /*
