@@ -119,7 +119,9 @@
         :withdraw-type="withdrawType"
         :eth-to-receive="ethToReceive"
       />
+      <connect-button v-if="!isLoggedIn" type="is-primary is-fullwidth" data-test="button_connect" />
       <b-tooltip
+        v-else
         class="is-block"
         :label="`${$t(tooltipText)}`"
         position="is-top"
@@ -157,6 +159,7 @@ import RelayerTotal from '@/components/withdraw/RelayerTotal'
 import WithdrawTotal from '@/components/withdraw/WithdrawTotal'
 import WithdrawModalBox from '@/components/withdraw/WithdrawModalBox'
 import SettingsModalBox from '@/components/settings/SettingsModalBox'
+import { ConnectButton } from '@/components/web3Connect'
 
 const { toChecksumAddress, isHexStrict, isAddress } = require('web3-utils')
 
@@ -165,7 +168,8 @@ export default {
     LinkIcon,
     RelayerTotal,
     // SettingsIcon,
-    WithdrawTotal
+    WithdrawTotal,
+    ConnectButton
   },
   props: {
     activeTab: {
