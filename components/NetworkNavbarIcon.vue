@@ -60,7 +60,7 @@ export default {
     height: 2.857em;
     width: 2.857em;
     background-color: #0f1f19;
-    border: 1px solid #94febf;
+    border: 1px solid #00bcd4;
     border-radius: 4px;
 
     &:first-child:not(:last-child) {
@@ -68,7 +68,7 @@ export default {
     }
 
     .trnd {
-      background-color: #94febf;
+      background-color: #00bcd4;
     }
   }
 }

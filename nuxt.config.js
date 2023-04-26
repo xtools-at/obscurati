@@ -114,7 +114,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#94febf', height: '5px', duration: 5000 },
+  loading: { color: '#00bcd4', height: '5px', duration: 5000 },
   /*
    ** Global CSS
    */
@@ -239,7 +239,7 @@ export default {
   // todo make custom loading page
   loadingIndicator: {
     name: 'circle',
-    color: '#94febf',
+    color: '#00bcd4',
     background: '#000'
   }
 }

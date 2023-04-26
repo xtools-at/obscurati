@@ -38,7 +38,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://github.com/xtools_at/obscurati"
+                  href="https://github.com/xtools-at/obscurati"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="git"
@@ -47,7 +47,7 @@
                 <b-button
                   tag="a"
                   type="is-icon"
-                  href="https://github.com/xtools_at/obscurati"
+                  href="https://github.com/xtools-at/obscurati"
                   target="_blank"
                   rel="noopener noreferrer"
                   icon-right="github"

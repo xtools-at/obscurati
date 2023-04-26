@@ -4,20 +4,20 @@ $control-padding-vertical: calc(0.429em - #{$control-border-width});
 $control-padding-horizontal: calc(1.25em - #{$control-border-width});
 
 $white: #eee;
-$primary: #94febf;
-$primary-invert: #000403;
+$primary: #00bcd4;
+$primary-invert: #222222;
 $warning: #ff8a00;
 $black: #2c4538;
 $danger: #ff0658;
-$danger-invert: #000403;
+$danger-invert: $primary-invert;
 $dark: #171717;
 $dark-invert: $primary;
 $info: $primary-invert;
 $info-invert: $white;
 $violet: #865ff3;
 $gray: #6b6b6b;
-$grey-lighter: #393939;
-$dark-tooltip: #313131;
+$grey-lighter: #343434;
+$dark-tooltip: #454545;
 $custom-colors: (
   'black': (
     $black,
@@ -58,6 +58,7 @@ $label-weight: $weight-normal;
 $button-background-color: #181818;
 $button-border-color: #666;
 $button-color: $white;
+$button-hover-color: lighten($primary, 10%);
 $button-hover-border-color: $primary;
 $button-focus-border-color: $primary;
 $button-focus-color: $primary;

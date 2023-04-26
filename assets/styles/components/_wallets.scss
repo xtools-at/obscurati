@@ -23,19 +23,19 @@
     height: auto;
 
     &.is-black {
-      background-color: #559774;
+      background-color: darken($primary, 30%);;
 
       &:hover {
-        background-color: #94febf;
+        background-color: $button-active-color;
       }
     }
 
     &.is-background {
       color: black;
-      background-color: #7ddaa9;
+      background-color: $primary;
 
       &:hover {
-        background-color: #94febf;
+        background-color: $button-active-color;
       }
     }
 

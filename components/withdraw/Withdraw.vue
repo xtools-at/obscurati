@@ -527,7 +527,7 @@ export default {
     bottom: 0;
     width: var(--width-animation);
     height: 100%;
-    background-color: #94febf;
+    background-color: #00bcd4;
     animation-fill-mode: backwards;
   }
 

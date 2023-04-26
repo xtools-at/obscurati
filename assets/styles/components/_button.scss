@@ -68,7 +68,7 @@
 
     &:hover {
       path:not(.no-hover) {
-        fill: #87feb7;
+        fill: $button-hover-color;
         transition: fill 0.15s ease-out;
       }
     }
@@ -97,7 +97,7 @@
     }
 
     &:hover {
-      background-color: #3bf0a1;
+      background-color: $button-hover-color;
     }
 
     &[disabled] {
