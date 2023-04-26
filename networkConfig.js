@@ -31,7 +31,7 @@ export default {
       xp: {
         instanceAddress: {
           '10': '0x76BF5E7d2Bcb06b1444C0a2742780051D8D0E304',
-          '100': '',
+          '100': '0x802C3437397C49F7edBabbE1697F14BF0393F87d',
           '1000': '',
           '10000': ''
         },
