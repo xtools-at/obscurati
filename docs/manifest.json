@@ -1,6 +1,6 @@
 {
-    "name": "Tornado Cash",
-    "short_name": "Tornado Cash",
+    "name": "Obscurati",
+    "short_name": "Obscurati",
     "icons": [
         {
             "src": "/favicon/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#000403",
-    "background_color": "#000403",
+    "theme_color": "#222222",
+    "background_color": "#222222",
     "display": "standalone"
 }
