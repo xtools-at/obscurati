@@ -572,6 +572,19 @@ const actions = {
           decimals: 18
         },
         blockExplorerUrls: ['https://snowtrace.io']
+      },
+      133: {
+        chainId: '0x85',
+        chainName: 'B Devnet',
+        rpcUrls: [
+          'https://rpc.connectednft.art:9650/ext/bc/2NXVLcGbemMjwyexwigxCoqn7UJ6DdeJdWNPxcWX4Y2eDem1aW/rpc'
+        ],
+        nativeCurrency: {
+          name: 'XP',
+          symbol: 'XP',
+          decimals: 18
+        },
+        blockExplorerUrls: ['https://example.com'] // TODO
       }
     }
 
