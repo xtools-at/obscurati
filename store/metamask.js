@@ -333,8 +333,8 @@ const actions = {
 
     if (netId !== 'loading' && Number(state.netId) !== Number(netId)) {
       try {
-        if (!networkConfig[`netId${netId}`]) {
-          dispatch('clearProvider')
+        if (!networkConfig[`netId${netId}`] || netId === 1) {
+          // dispatch('clearProvider')
 
           Snackbar.open({
             message: this.app.i18n.t('currentNetworkIsNotSupported'),
@@ -343,7 +343,9 @@ const actions = {
             actionText: 'OK',
             indefinite: true
           })
-          throw new Error(this.app.i18n.t('currentNetworkIsNotSupported'))
+
+          return
+          // throw new Error(this.app.i18n.t('currentNetworkIsNotSupported'))
         }
 
         commit('SET_NET_ID', netId)
@@ -410,8 +412,7 @@ const actions = {
 
       commit('IDENTIFY', address)
 
-      let netId = await dispatch('checkNetworkVersion')
-      if (netId === 1) netId = 133
+      const netId = await dispatch('checkNetworkVersion')
 
       await dispatch('onNetworkChanged', { netId })
       commit('SET_INITIALIZED', true)

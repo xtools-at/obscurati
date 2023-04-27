@@ -63,6 +63,10 @@ export default {
         if (isSupport) {
           await this.networkChangeHandler({ netId })
 
+          try {
+            this.$store.dispatch('metamask/switchNetwork', { netId })
+          } catch (e) {}
+
           if (!providerName) {
             this.$router.go(0)
           }
