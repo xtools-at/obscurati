@@ -344,6 +344,10 @@ const actions = {
             indefinite: true
           })
 
+          try {
+            dispatch('switchNetwork', { netId: state.netId })
+          } catch (e) {}
+
           return
           // throw new Error(this.app.i18n.t('currentNetworkIsNotSupported'))
         }
