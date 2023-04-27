@@ -16,7 +16,7 @@
                 >{{ donationsAddress }}</a
               >
             </div>
-            <div class="level-subitem">
+            <div class="level-subitem footer-address">
               <div class="footer-address__name">
                 obscurati version:
               </div>
