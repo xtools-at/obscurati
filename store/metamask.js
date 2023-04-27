@@ -410,7 +410,8 @@ const actions = {
 
       commit('IDENTIFY', address)
 
-      const netId = await dispatch('checkNetworkVersion')
+      let netId = await dispatch('checkNetworkVersion')
+      if (netId === 1) netId = 133
 
       await dispatch('onNetworkChanged', { netId })
       commit('SET_INITIALIZED', true)
